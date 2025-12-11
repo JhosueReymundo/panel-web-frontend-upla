@@ -1,0 +1,40 @@
+<div class="page-container">
+  <div class="page-header">
+    <h1>Nueva Dependencia</h1>
+  </div>
+
+  <div class="form-card">
+    <form [formGroup]="form" (ngSubmit)="onSubmit()">
+      <div class="form-group">
+        <label for="nombre">Nombre de Dependencia *</label>
+        <input
+          id="nombre"
+          type="text"
+          formControlName="nombre"
+          placeholder="Ej: Recursos Humanos"
+          [class.error]="nombre?.invalid && nombre?.touched"
+        />
+        <div class="error-message" *ngIf="nombre?.invalid && nombre?.touched">
+          <span *ngIf="nombre?.errors?.['required']">El nombre es requerido</span>
+          <span *ngIf="nombre?.errors?.['minlength']">Mínimo 3 caracteres</span>
+        </div>
+      </div>
+
+      <!-- Error general -->
+      <div class="alert-error" *ngIf="error">
+        {{ error }}
+      </div>
+
+      <!-- Botones -->
+      <div class="form-actions">
+        <button type="button" class="btn-secondary" (click)="onCancel()" [disabled]="loading">
+          Cancelar
+        </button>
+        <button type="submit" class="btn-primary" [disabled]="loading || form.invalid">
+          <span *ngIf="!loading">Crear Dependencia</span>
+          <span *ngIf="loading">Creando...</span>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

@@ -1,0 +1,20 @@
+<div class="page-container">
+  <div class="page-header">
+    <h1>Editar Comunicado</h1>
+    <p class="subtitle" *ngIf="comunicado">Editando: "{{ comunicado.titulo }}"</p>
+  </div>
+
+  <div *ngIf="loadingData" class="loading">
+    <div class="spinner"></div>
+    <p>Cargando datos...</p>
+  </div>
+
+  <div *ngIf="!loadingData && comunicado" class="form-wrapper">
+    <app-comunicado-form
+      [comunicado]="comunicado"
+      [loading]="loading"
+      (submitForm)="onSubmit($event)"
+      (cancel)="onCancel()">
+    </app-comunicado-form>
+  </div>
+</div>

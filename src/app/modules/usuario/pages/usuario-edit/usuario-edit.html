@@ -1,0 +1,22 @@
+<div class="page-container">
+  <div class="page-header">
+    <h1>Editar Usuario</h1>
+  </div>
+
+  <div *ngIf="loadingData" class="loading">
+    <div class="spinner"></div>
+    <p>Cargando datos...</p>
+  </div>
+
+  <div *ngIf="!loadingData && usuario" class="form-wrapper">
+    <app-usuario-form
+      [usuario]="usuario"
+      [roles]="roles"
+      [escuelas]="escuelas"
+      [dependencias]="dependencias"
+      [loading]="loading"
+      (submitForm)="onSubmit($event)"
+      (cancel)="onCancel()">
+    </app-usuario-form>
+  </div>
+</div>

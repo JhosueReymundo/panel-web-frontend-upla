@@ -1,0 +1,51 @@
+<!-- <ion-header>
+  <ion-toolbar color="primary">
+    <ion-title>Nosotros</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-list>
+    <ion-item button routerLink="equipo">Equipo</ion-item>
+    <ion-item button routerLink="mision">Misión</ion-item>
+    <ion-item button routerLink="vision">Visión</ion-item>
+    <ion-item button routerLink="valores">Valores</ion-item>
+  </ion-list>
+</ion-content> -->
+
+<div class="nosotros-container">
+  
+  <!-- Header -->
+  <div class="nosotros-header">
+    <h1>Gestión de Nosotros</h1>
+    <p class="subtitle">Administra la información institucional</p>
+  </div>
+
+  <!-- Menú de Secciones -->
+  <div class="secciones-menu">
+    <button 
+      *ngFor="let seccion of secciones"
+      class="seccion-card"
+      [class.seccion-card--active]="estaActiva(seccion.id)"
+      [style.--color-tema]="seccion.color"
+      (click)="navegarA(seccion)">
+      
+      <div class="seccion-icon">{{ seccion.icono }}</div>
+      <div class="seccion-info">
+        <h3 class="seccion-titulo">{{ seccion.titulo }}</h3>
+        <p class="seccion-descripcion">{{ seccion.descripcion }}</p>
+      </div>
+      
+      <svg class="seccion-arrow" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <line x1="5" y1="12" x2="19" y2="12"></line>
+        <polyline points="12 5 19 12 12 19"></polyline>
+      </svg>
+    </button>
+  </div>
+
+  <!-- Vista Hija (List, Create, Edit de cada módulo) -->
+  <div class="contenido-seccion">
+    <router-outlet></router-outlet>
+  </div>
+
+</div>

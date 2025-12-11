@@ -1,17 +1,44 @@
 # See https://docs.github.com/get-started/getting-started-with-git/ignoring-files for more about ignoring files.
 
-# Compiled output
+# ==========================================
+# COMPILED OUTPUT
+# ==========================================
 /dist
 /tmp
 /out-tsc
 /bazel-out
 
-# Node
+# ==========================================
+# NODE
+# ==========================================
 /node_modules
 npm-debug.log
 yarn-error.log
+yarn-debug.log*
+.pnpm-debug.log*
+.lock-wscript
 
+# ==========================================
+# ENVIRONMENT VARIABLES (¡CRÍTICO!)
+# ==========================================
+.env
+.env.*
+!.env.example
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# ==========================================
+# DOCKER
+# ==========================================
+docker-compose.override.yml
+docker-data/
+*.tar.gz
+
+# ==========================================
 # IDEs and editors
+# ==========================================
 .idea/
 .project
 .classpath
@@ -28,7 +55,9 @@ yarn-error.log
 !.vscode/extensions.json
 .history/*
 
-# Miscellaneous
+# ==========================================
+# MISCELLANEOUS
+# ==========================================
 /.angular/cache
 .sass-cache/
 /connect.lock
@@ -38,6 +67,24 @@ testem.log
 /typings
 __screenshots__/
 
-# System files
+# ==========================================
+# SYSTEM FILES
+# ==========================================
 .DS_Store
 Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# ==========================================
+# LOGS
+# ==========================================
+*.log
+logs/
+log/
+
+# ==========================================
+# TEMP FILES
+# ==========================================
+*.swp
+*.swo
+*~

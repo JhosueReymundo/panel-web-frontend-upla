@@ -1,0 +1,22 @@
+<div class="edit-container">
+    <div class="edit-header">
+    <h2>Editar Misión</h2>
+    <p class="subtitle" *ngIf="mision">
+        {{ mision.isActive ? 'Misión Activa' : 'Misión Inactiva' }}
+    </p>
+    </div>
+
+    <div *ngIf="loadingData" class="loading">
+    <div class="spinner"></div>
+    <p>Cargando datos...</p>
+    </div>
+
+    <div *ngIf="!loadingData && mision" class="form-wrapper">
+    <app-mision-form
+        [mision]="mision"
+        [loading]="loading"
+        (submitForm)="onSubmit($event)"
+        (cancel)="onCancel()">
+    </app-mision-form>
+    </div>
+</div>

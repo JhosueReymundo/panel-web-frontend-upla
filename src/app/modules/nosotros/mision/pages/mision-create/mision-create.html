@@ -1,0 +1,14 @@
+<div class="create-container">
+    <div class="create-header">
+    <h2>Nueva Misión</h2>
+    <p class="subtitle">Define la misión institucional</p>
+    </div>
+
+    <div class="form-wrapper">
+    <app-mision-form
+        [loading]="loading"
+        (submitForm)="onSubmit($event)"
+        (cancel)="onCancel()">
+    </app-mision-form>
+    </div>
+</div>

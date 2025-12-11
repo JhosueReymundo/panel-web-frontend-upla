@@ -1,0 +1,97 @@
+<form [formGroup]="form" (ngSubmit)="onSubmit()" class="documento-form">
+  <!-- Información del Documento -->
+  <div class="form-section">
+    <h3>Información del Horario</h3>
+    
+    <div class="form-group">
+      <label for="nombre">Nombre del Horario *</label>
+      <input
+        id="nombre"
+        type="text"
+        formControlName="nombre"
+        placeholder="Ej: Horario lab01"
+        [class.error]="nombre?.invalid && nombre?.touched"
+      />
+      <div class="error-message" *ngIf="nombre?.invalid && nombre?.touched">
+        <span *ngIf="nombre?.errors?.['required']">El nombre es requerido</span>
+        <span *ngIf="nombre?.errors?.['minlength']">Mínimo 1 carácter</span>
+        <span *ngIf="nombre?.errors?.['maxlength']">Máximo 255 caracteres</span>
+      </div>
+    </div>
+
+    <div class="form-row">
+      <div class="form-group form-group-checkbox">
+        <label class="checkbox-label">
+          <input type="checkbox" formControlName="esVisible" />
+          <span>Activo (visible en el sitio público)</span>
+        </label>
+      </div>
+    </div>
+  </div>
+
+  <!-- Subir Archivo PDF -->
+  <div class="form-section">
+    <h3>Archivo PDF</h3>
+    
+    <div class="upload-area">
+      <div class="file-input-wrapper">
+        <input
+          id="archivo"
+          type="file"
+          accept=".pdf"
+          (change)="onFileSelected($event)"
+          class="file-input"
+        />
+        <label for="archivo" class="file-input-label">
+          <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+            <polyline points="17 8 12 3 7 8"></polyline>
+            <line x1="12" y1="3" x2="12" y2="15"></line>
+          </svg>
+          <span class="file-input-text">
+            {{ selectedFile ? 'Cambiar archivo' : (horario ? 'Cambiar PDF' : 'Seleccionar PDF') }}
+          </span>
+          <small>Solo archivos PDF (máx. 10MB)</small>
+        </label>
+      </div>
+
+      <div class="file-preview" *ngIf="previewUrl">
+        <div class="preview-content">
+          <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+            <polyline points="14 2 14 8 20 8"></polyline>
+            <line x1="12" y1="18" x2="12" y2="12"></line>
+            <line x1="9" y1="15" x2="15" y2="15"></line>
+          </svg>
+          <div class="preview-info">
+            <p class="file-name">{{ selectedFile?.name || previewUrl }}</p>
+            <small *ngIf="selectedFile" class="file-size">
+              {{ (selectedFile.size / 1024 / 1024).toFixed(2) }} MB
+            </small>
+          </div>
+        </div>
+        <button type="button" class="btn-remove-file" (click)="removeFile()" *ngIf="!horario">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+            <line x1="6" y1="6" x2="18" y2="18"></line>
+          </svg>
+        </button>
+      </div>
+    </div>
+
+    <div class="upload-info">
+      <p>* Al editar, puedes dejar el archivo actual sin cambios o seleccionar uno nuevo para reemplazarlo.</p>
+    </div>
+  </div>
+
+  <!-- Botones -->
+  <div class="form-actions">
+    <button type="button" class="btn-secondary" (click)="onCancel()" [disabled]="loading">
+      Cancelar
+    </button>
+    <button type="submit" class="btn-primary" [disabled]="loading || form.invalid">
+      <span *ngIf="!loading">{{ horario ? 'Actualizar' : 'Crear' }} Horario</span>
+      <span *ngIf="loading">{{ horario ? 'Actualizando...' : 'Creando...' }}</span>
+    </button>
+  </div>
+</form>

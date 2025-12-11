@@ -1,0 +1,47 @@
+<div class="page-container">
+  <div class="page-header">
+    <h1>Editar Rol</h1>
+  </div>
+
+  <!-- Loading -->
+  <div *ngIf="loadingData" class="loading">
+    <div class="spinner"></div>
+    <p>Cargando datos...</p>
+  </div>
+
+  <!-- Form -->
+  <div *ngIf="!loadingData" class="form-card">
+    <form [formGroup]="form" (ngSubmit)="onSubmit()">
+      <div class="form-group">
+        <label for="nombreRol">Nombre de Rol *</label>
+        <input
+          id="nombreRol"
+          type="text"
+          formControlName="nombreRol"
+          placeholder="Ej: admin"
+          [class.error]="nombreRol?.invalid && nombreRol?.touched"
+        />
+        <div class="error-message" *ngIf="nombreRol?.invalid && nombreRol?.touched">
+          <span *ngIf="nombreRol?.errors?.['required']">El nombre es requerido</span>
+          <span *ngIf="nombreRol?.errors?.['minlength']">Mínimo 3 caracteres</span>
+        </div>
+      </div>
+
+      <div class="alert-error" *ngIf="error">
+        {{ error }}
+      </div>
+
+      <div class="form-actions">
+        <button type="button" class="btn-secondary" (click)="onCancel()" [disabled]="loading">
+          Cancelar
+        </button>
+        <button type="submit" class="btn-primary" [disabled]="loading || form.invalid">
+          <span *ngIf="!loading">Actualizar</span>
+          <span *ngIf="loading">Actualizando...</span>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+
+

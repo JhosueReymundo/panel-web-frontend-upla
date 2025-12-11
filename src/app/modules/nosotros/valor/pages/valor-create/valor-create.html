@@ -1,0 +1,15 @@
+<div class="create-container">
+    <div class="create-header">
+    <h2>Nuevo Valor</h2>
+    <p class="subtitle">Define un valor institucional</p>
+    </div>
+
+    <div class="form-wrapper">
+    <app-valor-form
+        [loading]="loading"
+        (submitForm)="onSubmit($event)"
+        (cancel)="onCancel()">
+    </app-valor-form>
+    </div>
+</div>
+

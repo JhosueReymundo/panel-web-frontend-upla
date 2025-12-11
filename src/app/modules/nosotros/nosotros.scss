@@ -1,0 +1,150 @@
+.nosotros-container {
+  padding: 2rem;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+// ========== HEADER ==========
+.nosotros-header {
+  margin-bottom: 2rem;
+
+  h1 {
+    font-size: 2rem;
+    color: white;
+    margin: 0 0 0.5rem 0;
+    font-weight: 700;
+  }
+
+  .subtitle {
+    color: #9ca3af;
+    margin: 0;
+    font-size: 1rem;
+  }
+}
+
+// ========== MENU DE SECCIONES ==========
+.secciones-menu {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 3rem;
+}
+
+.seccion-card {
+  background: #1a1a1a;
+  border: 2px solid rgba(16, 185, 129, 0.2);
+  border-radius: 16px;
+  padding: 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 4px;
+    height: 100%;
+    background: var(--color-tema, #10b981);
+    transform: scaleY(0);
+    transition: transform 0.3s ease;
+  }
+
+  &:hover {
+    transform: translateX(8px);
+    border-color: var(--color-tema, #10b981);
+    box-shadow: 0 8px 24px rgba(16, 185, 129, 0.2);
+
+    &::before {
+      transform: scaleY(1);
+    }
+
+    .seccion-icon {
+      transform: scale(1.2);
+    }
+
+    .seccion-arrow {
+      transform: translateX(8px);
+      opacity: 1;
+    }
+  }
+
+  &--active {
+    border-color: var(--color-tema, #10b981);
+    background: rgba(16, 185, 129, 0.05);
+    box-shadow: 0 8px 24px rgba(16, 185, 129, 0.3);
+
+    &::before {
+      transform: scaleY(1);
+    }
+
+    .seccion-arrow {
+      opacity: 1;
+    }
+  }
+}
+
+.seccion-icon {
+  font-size: 2.5rem;
+  line-height: 1;
+  flex-shrink: 0;
+  transition: transform 0.3s ease;
+}
+
+.seccion-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.seccion-titulo {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: white;
+  margin: 0 0 0.25rem 0;
+}
+
+.seccion-descripcion {
+  font-size: 0.875rem;
+  color: #9ca3af;
+  margin: 0;
+  line-height: 1.4;
+}
+
+.seccion-arrow {
+  color: #6b7280;
+  flex-shrink: 0;
+  opacity: 0.5;
+  transition: all 0.3s ease;
+}
+
+// ========== CONTENIDO DE SECCION ==========
+.contenido-seccion {
+  animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+// ========== RESPONSIVE ==========
+@media (max-width: 768px) {
+  .secciones-menu {
+    grid-template-columns: 1fr;
+  }
+
+  .nosotros-header h1 {
+    font-size: 1.5rem;
+  }
+}

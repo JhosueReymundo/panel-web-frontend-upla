@@ -1,0 +1,123 @@
+<!-- <div class="page-container">
+  <div class="page-header">
+    <div>
+      <h1>Gestión de Servicios</h1>
+      <p class="subtitle">Administra los servicios que ofreces</p>
+    </div>
+    <div class="header-actions">
+      <button class="btn-secondary" (click)="toggleShowHidden()">
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+          <circle cx="12" cy="12" r="3"></circle>
+        </svg>
+        {{ showHidden ? 'Solo Visibles' : 'Mostrar Ocultos' }}
+      </button>
+      <button class="btn-primary" routerLink="/servicios/nuevo">
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <line x1="12" y1="5" x2="12" y2="19"></line>
+          <line x1="5" y1="12" x2="19" y2="12"></line>
+        </svg>
+        Nuevo Servicio
+      </button>
+    </div>
+  </div>
+
+  <div *ngIf="loading" class="loading">
+    <div class="spinner"></div>
+    <p>Cargando servicios...</p>
+  </div>
+
+  <div *ngIf="error" class="error-message">
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <circle cx="12" cy="12" r="10"></circle>
+      <line x1="12" y1="8" x2="12" y2="12"></line>
+      <line x1="12" y1="16" x2="12.01" y2="16"></line>
+    </svg>
+    <p>{{ error }}</p>
+    <button class="btn-secondary" (click)="loadServicios()">Reintentar</button>
+  </div>
+
+  <div *ngIf="!loading && !error" class="servicios-grid">
+    <app-servicio-card 
+      *ngFor="let servicio of servicios"
+      [servicio]="servicio"
+      (delete)="deleteServicio($event)">
+    </app-servicio-card>
+
+    <div *ngIf="servicios.length === 0" class="empty-state">
+      <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <circle cx="12" cy="12" r="10"></circle>
+        <line x1="12" y1="8" x2="12" y2="12"></line>
+        <line x1="12" y1="16" x2="12.01" y2="16"></line>
+      </svg>
+      <p>No hay servicios registrados</p>
+      <button class="btn-primary" routerLink="/servicios/nuevo">
+        Crear Primer Servicio
+      </button>
+    </div>
+  </div>
+</div> -->
+
+<div class="page-container">
+  <div class="page-header">
+    <div>
+      <h1>Gestión de Servicios</h1>
+      <p class="subtitle">Administra los servicios que ofreces</p>
+    </div>
+    <div class="header-actions">
+      <button class="btn-secondary" (click)="toggleShowHidden()">
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+          <circle cx="12" cy="12" r="3"></circle>
+        </svg>
+        {{ showHidden ? 'Solo Visibles' : 'Mostrar Ocultos' }}
+      </button>
+      <button class="btn-primary" routerLink="/servicios/nuevo">
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <line x1="12" y1="5" x2="12" y2="19"></line>
+          <line x1="5" y1="12" x2="19" y2="12"></line>
+        </svg>
+        Nuevo Servicio
+      </button>
+    </div>
+  </div>
+
+  <!-- Loading -->
+  <div *ngIf="loading" class="loading">
+    <div class="spinner"></div>
+    <p>Cargando servicios...</p>
+  </div>
+
+  <!-- Error -->
+  <div *ngIf="error" class="error-message">
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <circle cx="12" cy="12" r="10"></circle>
+      <line x1="12" y1="8" x2="12" y2="12"></line>
+      <line x1="12" y1="16" x2="12.01" y2="16"></line>
+    </svg>
+    <p>{{ error }}</p>
+    <button class="btn-secondary" (click)="loadServicios()">Reintentar</button>
+  </div>
+
+  <!-- Grid de Servicios -->
+  <div *ngIf="!loading && !error" class="servicios-grid">
+    <app-servicio-card 
+      *ngFor="let servicio of servicios"
+      [servicio]="servicio"
+      (delete)="deleteServicio($event)"
+      (toggleVisibility)="toggleVisibility($event)">
+    </app-servicio-card>
+
+    <div *ngIf="servicios.length === 0" class="empty-state">
+      <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <circle cx="12" cy="12" r="10"></circle>
+        <line x1="12" y1="8" x2="12" y2="12"></line>
+        <line x1="12" y1="16" x2="12.01" y2="16"></line>
+      </svg>
+      <p>No hay servicios registrados</p>
+      <button class="btn-primary" routerLink="/servicios/nuevo">
+        Crear Primer Servicio
+      </button>
+    </div>
+  </div>
+</div>

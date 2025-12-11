@@ -1,0 +1,18 @@
+<div class="page-container">
+  <div class="page-header">
+    <h1>Editar Horiario</h1>
+  </div>
+
+  <div *ngIf="loadingData" class="loading">
+    <div class="spinner"></div>
+    <p>Cargando datos...</p>
+  </div>
+
+  <div *ngIf="!loadingData && horario" class="form-wrapper">
+    <app-horario-form
+      [horario]="horario"
+      [loading]="loading"
+      (submitForm)="onSubmit($event)"
+      (cancel)="onCancel()">
+    </app-horario-form>
+  </div>

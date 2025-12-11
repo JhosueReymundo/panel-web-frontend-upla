@@ -1,0 +1,177 @@
+<div class="respuestas-container">
+  <!-- Header -->
+  <div class="header">
+    <button class="btn-back" (click)="volver()">
+      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <line x1="19" y1="12" x2="5" y2="12"></line>
+        <polyline points="12 19 5 12 12 5"></polyline>
+      </svg>
+      Volver
+    </button>
+
+    <div class="header-info" *ngIf="encuesta">
+      <h1 class="title">{{ encuesta.nombre }}</h1>
+      <p class="subtitle" *ngIf="encuesta.descripcion">{{ encuesta.descripcion }}</p>
+      <div class="stats-badges">
+        <span class="badge badge-primary">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+            <circle cx="9" cy="7" r="4"></circle>
+            <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+            <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+          </svg>
+          {{ respuestas.length }} Respuestas
+        </span>
+        <span class="badge badge-secondary">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="1"></circle>
+            <circle cx="19" cy="12" r="1"></circle>
+            <circle cx="5" cy="12" r="1"></circle>
+          </svg>
+          {{ encuesta.preguntas.length }} Preguntas
+        </span>
+      </div>
+    </div>
+
+    <div class="header-actions">
+      <button class="btn-export" (click)="exportarCSV()" *ngIf="respuestas.length > 0">
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+          <polyline points="7 10 12 15 17 10"></polyline>
+          <line x1="12" y1="15" x2="12" y2="3"></line>
+        </svg>
+        Exportar CSV
+      </button>
+    </div>
+  </div>
+
+  <!-- Vista Toggle -->
+  <div class="vista-toggle">
+    <button 
+      [class.active]="vistaActual === 'respuestas'" 
+      (click)="cambiarVista('respuestas')"
+      class="toggle-btn">
+      <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+        <polyline points="14 2 14 8 20 8"></polyline>
+        <line x1="12" y1="18" x2="12" y2="12"></line>
+        <line x1="9" y1="15" x2="15" y2="15"></line>
+      </svg>
+      Respuestas Individuales
+    </button>
+    <button 
+      [class.active]="vistaActual === 'estadisticas'" 
+      (click)="cambiarVista('estadisticas')"
+      class="toggle-btn">
+      <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <line x1="18" y1="20" x2="18" y2="10"></line>
+        <line x1="12" y1="20" x2="12" y2="4"></line>
+        <line x1="6" y1="20" x2="6" y2="14"></line>
+      </svg>
+      Estadísticas
+    </button>
+  </div>
+
+  <!-- Loading -->
+  <div class="loading" *ngIf="loading">
+    <div class="spinner"></div>
+    <p>Cargando respuestas...</p>
+  </div>
+
+  <!-- Vista de Respuestas Individuales -->
+  <div class="respuestas-list" *ngIf="!loading && vistaActual === 'respuestas'">
+    <div class="empty-state" *ngIf="respuestas.length === 0">
+      <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+        <path d="M9 11H3v2h6m-6 4h6m2-6h6m-6 4h6m2-7V5c0-1.1-.9-2-2-2h-4l-2-2h-6L5 3H1c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h18c1.1 0 2-.9 2-2v-8h-2z"></path>
+      </svg>
+      <h3>No hay respuestas todavía</h3>
+      <p>Cuando los usuarios respondan la encuesta, aparecerán aquí.</p>
+    </div>
+
+    <div class="respuesta-card" *ngFor="let respuesta of respuestas; let i = index">
+      <div class="respuesta-header">
+        <div class="respuesta-info">
+          <span class="respuesta-numero">#{{ respuestas.length - i }}</span>
+          <div class="respuesta-datos">
+            <p class="respuesta-email">{{ respuesta.email }}</p>
+            <p class="respuesta-meta">
+              <span>{{ respuesta.codigo_estudiante }}</span>
+              <span class="separator">•</span>
+              <span>{{ respuesta.escuela?.nombreEscuela }}</span>
+              <span class="separator">•</span>
+              <span>Ciclo {{ respuesta.ciclo }}</span>
+            </p>
+          </div>
+        </div>
+        <span class="respuesta-fecha">{{ getFechaRespuesta(respuesta.creado_en) }}</span>
+      </div>
+
+      <div class="respuesta-body">
+        <div class="pregunta-respuesta" *ngFor="let pregunta of encuesta?.preguntas">
+          <div class="pregunta-header">
+            <span class="pregunta-numero">P{{ pregunta.orden }}</span>
+            <p class="pregunta-texto">{{ pregunta.texto }}</p>
+            <span class="pregunta-tipo" [class]="'tipo-' + pregunta.tipo">{{ pregunta.tipo }}</span>
+          </div>
+          <div class="respuesta-contenido" [class]="'tipo-' + pregunta.tipo">
+            {{ getRespuestaTexto(respuesta, pregunta.id) }}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Vista de Estadísticas -->
+  <div class="estadisticas-view" *ngIf="!loading && vistaActual === 'estadisticas' && estadisticas">
+    <div class="estadistica-card" *ngFor="let preguntaStat of estadisticas.preguntas">
+      <div class="stat-header">
+        <div>
+          <h3 class="stat-pregunta">{{ preguntaStat.texto }}</h3>
+          <span class="stat-tipo">{{ preguntaStat.tipo }}</span>
+        </div>
+        <span class="stat-total">{{ preguntaStat.total_respuestas }} respuestas</span>
+      </div>
+
+      <div class="stat-body">
+        <!-- Estadísticas para preguntas de opción -->
+        <div class="opciones-stats" *ngIf="preguntaStat.tipo === TipoPregunta.OPCION && preguntaStat.distribucion">
+          <div class="opcion-stat" *ngFor="let dist of preguntaStat.distribucion">
+            <div class="opcion-info">
+              <span class="opcion-texto">{{ dist.texto }}</span>
+              <span class="opcion-count">{{ dist.cantidad }} ({{ dist.porcentaje }}%)</span>
+            </div>
+            <div class="progress-bar">
+              <div class="progress-fill" [style.width.%]="dist.porcentaje"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Estadísticas para preguntas numéricas -->
+        <div class="numerica-stats" *ngIf="preguntaStat.tipo === TipoPregunta.NUMERICA">
+          <div class="stat-item">
+            <span class="stat-label">Promedio:</span>
+            <span class="stat-value">{{ preguntaStat.promedio }}</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-label">Mínimo:</span>
+            <span class="stat-value">{{ preguntaStat.minimo }}</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-label">Máximo:</span>
+            <span class="stat-value">{{ preguntaStat.maximo }}</span>
+          </div>
+        </div>
+
+        <!-- Estadísticas para preguntas abiertas -->
+        <div class="abierta-stats" *ngIf="preguntaStat.tipo === TipoPregunta.ABIERTA && preguntaStat.respuestas_texto">
+          <div class="respuesta-texto-item" *ngFor="let texto of preguntaStat.respuestas_texto.slice(0, 5)">
+            "{{ texto }}"
+          </div>
+          <p class="ver-mas" *ngIf="preguntaStat.respuestas_texto.length > 5">
+            + {{ preguntaStat.respuestas_texto.length - 5 }} respuestas más
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

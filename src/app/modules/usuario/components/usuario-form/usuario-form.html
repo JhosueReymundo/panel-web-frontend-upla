@@ -1,0 +1,150 @@
+<form [formGroup]="form" (ngSubmit)="onSubmit()" class="usuario-form">
+  <!-- Información Personal -->
+  <div class="form-section">
+    <h3>Información Personal</h3>
+    
+    <div class="form-row">
+      <div class="form-group">
+        <label for="nombre">Nombre *</label>
+        <input
+          id="nombre"
+          type="text"
+          formControlName="nombre"
+          placeholder="Ej: Juan"
+          [class.error]="nombre?.invalid && nombre?.touched"
+        />
+        <div class="error-message" *ngIf="nombre?.invalid && nombre?.touched">
+          <span *ngIf="nombre?.errors?.['required']">El nombre es requerido</span>
+          <span *ngIf="nombre?.errors?.['minlength']">Mínimo 2 caracteres</span>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="apellido">Apellido *</label>
+        <input
+          id="apellido"
+          type="text"
+          formControlName="apellido"
+          placeholder="Ej: Pérez"
+          [class.error]="apellido?.invalid && apellido?.touched"
+        />
+        <div class="error-message" *ngIf="apellido?.invalid && apellido?.touched">
+          <span *ngIf="apellido?.errors?.['required']">El apellido es requerido</span>
+          <span *ngIf="apellido?.errors?.['minlength']">Mínimo 2 caracteres</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="email">Email *</label>
+      <input
+        id="email"
+        type="email"
+        formControlName="email"
+        placeholder="ejemplo@correo.com"
+        [class.error]="email?.invalid && email?.touched"
+      />
+      <div class="error-message" *ngIf="email?.invalid && email?.touched">
+        <span *ngIf="email?.errors?.['required']">El email es requerido</span>
+        <span *ngIf="email?.errors?.['email']">Email inválido</span>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="password">
+        Contraseña {{ usuario ? '(dejar vacío para no cambiar)' : '*' }}
+      </label>
+      <div class="password-input">
+        <input
+          id="password"
+          [type]="showPassword ? 'text' : 'password'"
+          formControlName="password"
+          placeholder="Mínimo 6 caracteres"
+          [class.error]="password?.invalid && password?.touched"
+        />
+        <button type="button" class="toggle-password" (click)="togglePasswordVisibility()">
+          <svg *ngIf="!showPassword" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+            <circle cx="12" cy="12" r="3"></circle>
+          </svg>
+          <svg *ngIf="showPassword" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path>
+            <line x1="1" y1="1" x2="23" y2="23"></line>
+          </svg>
+        </button>
+      </div>
+      <div class="error-message" *ngIf="password?.invalid && password?.touched">
+        <span *ngIf="password?.errors?.['required']">La contraseña es requerida</span>
+        <span *ngIf="password?.errors?.['minlength']">Mínimo 6 caracteres</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Información Institucional -->
+  <div class="form-section">
+    <h3>Información Institucional</h3>
+    
+    <div class="form-group">
+      <label for="rolId">Rol *</label>
+      <select id="rolId" formControlName="rolId" [class.error]="rolId?.invalid && rolId?.touched">
+        <option [value]="null">Seleccionar rol</option>
+        <option *ngFor="let rol of roles" [value]="rol.id">
+          {{ rol.nombreRol }}
+        </option>
+      </select>
+      <div class="error-message" *ngIf="rolId?.invalid && rolId?.touched">
+        <span *ngIf="rolId?.errors?.['required']">El rol es requerido</span>
+      </div>
+    </div>
+
+    <div class="form-row">
+      <div class="form-group">
+        <label for="escuelaId">Escuela</label>
+        <select id="escuelaId" formControlName="escuelaId">
+          <option [value]="null">Sin escuela</option>
+          <option *ngFor="let escuela of escuelas" [value]="escuela.id">
+            {{ escuela.nombreEscuela }}
+          </option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="dependenciaId">Dependencia</label>
+        <select id="dependenciaId" formControlName="dependenciaId">
+          <option [value]="null">Sin dependencia</option>
+          <option *ngFor="let dependencia of dependencias" [value]="dependencia.id">
+            {{ dependencia.nombre}}
+          </option>
+        </select>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="oficina">Oficina</label>
+      <input
+        id="oficina"
+        type="text"
+        formControlName="oficina"
+        placeholder="Ej: Oficina 201"
+      />
+    </div>
+
+    <div class="form-group form-group-checkbox">
+      <label class="checkbox-label">
+        <input type="checkbox" formControlName="esActivo" />
+        <span>Usuario activo</span>
+      </label>
+    </div>
+  </div>
+
+  <!-- Botones -->
+  <div class="form-actions">
+    <button type="button" class="btn-secondary" (click)="onCancel()" [disabled]="loading">
+      Cancelar
+    </button>
+    <button type="submit" class="btn-primary" [disabled]="loading || form.invalid">
+      <span *ngIf="!loading">{{ usuario ? 'Actualizar' : 'Crear' }} Usuario</span>
+      <span *ngIf="loading">{{ usuario ? 'Actualizando...' : 'Creando...' }}</span>
+    </button>
+  </div>
+</form>

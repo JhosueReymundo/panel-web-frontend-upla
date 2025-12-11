@@ -1,0 +1,14 @@
+<div class="create-container">
+    <div class="create-header">
+    <h2>Nueva Visión</h2>
+    <p class="subtitle">Define la visión institucional</p>
+    </div>
+
+    <div class="form-wrapper">
+    <app-vision-form
+        [loading]="loading"
+        (submitForm)="onSubmit($event)"
+        (cancel)="onCancel()">
+    </app-vision-form>
+    </div>
+</div>

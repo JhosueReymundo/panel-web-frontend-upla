@@ -1,0 +1,218 @@
+<div class="builder-container">
+  <!-- Header -->
+  <div class="builder-header">
+    <div class="header-content">
+      <button class="btn-back" (click)="volver()">
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <line x1="19" y1="12" x2="5" y2="12"></line>
+          <polyline points="12 19 5 12 12 5"></polyline>
+        </svg>
+        Volver
+      </button>
+      
+      <div *ngIf="encuesta">
+        <h1>Constructor de Encuesta</h1>
+        <p class="subtitle">{{ encuesta.nombre }}</p>
+      </div>
+    </div>
+
+    <div class="header-actions">
+      <span class="question-counter">
+        {{ preguntas.length }} pregunta{{ preguntas.length !== 1 ? 's' : '' }}
+      </span>
+      <button class="btn-primary" (click)="toggleFormPregunta()" [disabled]="mostrarFormPregunta">
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <line x1="12" y1="5" x2="12" y2="19"></line>
+          <line x1="5" y1="12" x2="19" y2="12"></line>
+        </svg>
+        Nueva Pregunta
+      </button>
+    </div>
+  </div>
+
+  <!-- Loading -->
+  <div *ngIf="loadingData" class="loading">
+    <div class="spinner"></div>
+    <p>Cargando encuesta...</p>
+  </div>
+
+  <!-- Builder Content -->
+  <div *ngIf="!loadingData" class="builder-content">
+    
+    <!-- Formulario Nueva Pregunta -->
+    <div class="pregunta-form-card" *ngIf="mostrarFormPregunta">
+      <div class="form-header">
+        <h3>Nueva Pregunta</h3>
+        <button class="btn-close" (click)="toggleFormPregunta()">✕</button>
+      </div>
+
+      <form [formGroup]="preguntaForm" (ngSubmit)="guardarPregunta()">
+        
+        <!-- Texto de la pregunta -->
+        <div class="form-group">
+          <label for="texto">Texto de la Pregunta *</label>
+          <textarea
+            id="texto"
+            formControlName="texto"
+            rows="3"
+            placeholder="¿Cuál es tu pregunta?"
+            [class.error]="preguntaForm.get('texto')?.invalid && preguntaForm.get('texto')?.touched"
+          ></textarea>
+          <div class="error-message" *ngIf="preguntaForm.get('texto')?.invalid && preguntaForm.get('texto')?.touched">
+            <span *ngIf="preguntaForm.get('texto')?.errors?.['required']">El texto es requerido</span>
+            <span *ngIf="preguntaForm.get('texto')?.errors?.['minlength']">Mínimo 5 caracteres</span>
+          </div>
+        </div>
+
+        <!-- Tipo de pregunta -->
+        <div class="form-group">
+          <label for="tipo">Tipo de Pregunta *</label>
+          <div class="tipo-selector">
+            <label class="tipo-option" [class.active]="preguntaForm.get('tipo')?.value === TipoPregunta.ABIERTA">
+              <input 
+                type="radio" 
+                formControlName="tipo" 
+                [value]="TipoPregunta.ABIERTA"
+                (change)="onTipoPreguntaChange()"
+              />
+              <span class="tipo-icon">📝</span>
+              <span class="tipo-label">Abierta</span>
+            </label>
+
+            <label class="tipo-option" [class.active]="preguntaForm.get('tipo')?.value === TipoPregunta.OPCION">
+              <input 
+                type="radio" 
+                formControlName="tipo" 
+                [value]="TipoPregunta.OPCION"
+                (change)="onTipoPreguntaChange()"
+              />
+              <span class="tipo-icon">☑️</span>
+              <span class="tipo-label">Opción Múltiple</span>
+            </label>
+
+            <label class="tipo-option" [class.active]="preguntaForm.get('tipo')?.value === TipoPregunta.NUMERICA">
+              <input 
+                type="radio" 
+                formControlName="tipo" 
+                [value]="TipoPregunta.NUMERICA"
+                (change)="onTipoPreguntaChange()"
+              />
+              <span class="tipo-icon">🔢</span>
+              <span class="tipo-label">Numérica</span>
+            </label>
+          </div>
+        </div>
+
+        <!-- Opciones (solo si es tipo OPCION) -->
+        <div class="form-group" *ngIf="preguntaForm.get('tipo')?.value === TipoPregunta.OPCION">
+          <label>Opciones de Respuesta</label>
+          
+          <div class="opciones-list">
+            <div 
+              *ngFor="let opcion of opciones.controls; let i = index" 
+              class="opcion-item"
+              [formGroup]="$any(opcion)"
+            >
+              <span class="opcion-numero">{{ i + 1 }}</span>
+              <input 
+                type="text" 
+                formControlName="texto" 
+                placeholder="Escribe una opción..."
+                [class.error]="opcion.get('texto')?.invalid && opcion.get('texto')?.touched"
+              />
+              <button 
+                type="button" 
+                class="btn-icon-danger" 
+                (click)="eliminarOpcion(i)"
+                *ngIf="opciones.length > 2"
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <polyline points="3 6 5 6 21 6"></polyline>
+                  <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+                </svg>
+              </button>
+            </div>
+          </div>
+
+          <button type="button" class="btn-add-option" (click)="agregarOpcion()">
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <line x1="12" y1="5" x2="12" y2="19"></line>
+              <line x1="5" y1="12" x2="19" y2="12"></line>
+            </svg>
+            Agregar Opción
+          </button>
+        </div>
+
+        <!-- Actions -->
+        <div class="form-actions">
+          <button type="button" class="btn-secondary" (click)="toggleFormPregunta()" [disabled]="saving">
+            Cancelar
+          </button>
+          <button type="submit" class="btn-primary" [disabled]="preguntaForm.invalid || saving">
+            <span *ngIf="!saving">Guardar Pregunta</span>
+            <span *ngIf="saving">Guardando...</span>
+          </button>
+        </div>
+      </form>
+    </div>
+
+    <!-- Lista de Preguntas -->
+    <div class="preguntas-list">
+      <div class="empty-state" *ngIf="preguntas.length === 0 && !mostrarFormPregunta">
+        <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="12" cy="12" r="10"></circle>
+          <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path>
+          <line x1="12" y1="17" x2="12.01" y2="17"></line>
+        </svg>
+        <p>No hay preguntas todavía</p>
+        <button class="btn-primary" (click)="toggleFormPregunta()">
+          Agregar Primera Pregunta
+        </button>
+      </div>
+
+      <div class="pregunta-card" *ngFor="let pregunta of preguntas; let i = index">
+        <div class="pregunta-header">
+          <div class="pregunta-info">
+            <span class="pregunta-numero">Pregunta {{ i + 1 }}</span>
+            <span class="pregunta-tipo">{{ getTipoIcon(pregunta.tipo) }} {{ getTipoLabel(pregunta.tipo) }}</span>
+          </div>
+          <button class="btn-icon-danger" (click)="eliminarPregunta(pregunta)">
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polyline points="3 6 5 6 21 6"></polyline>
+              <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+            </svg>
+          </button>
+        </div>
+
+        <div class="pregunta-body">
+          <p class="pregunta-texto">{{ pregunta.texto }}</p>
+
+          <!-- Opciones (si las tiene) -->
+          <div class="opciones-preview" *ngIf="pregunta.opciones && pregunta.opciones.length > 0">
+            <div class="opcion-preview" *ngFor="let opcion of pregunta.opciones">
+              <span class="radio-icon">○</span>
+              <span>{{ opcion.texto }}</span>
+              <button class="btn-icon-danger-small" (click)="eliminarOpcionExistente(opcion)">
+                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <line x1="18" y1="6" x2="6" y2="18"></line>
+                  <line x1="6" y1="6" x2="18" y2="18"></line>
+                </svg>
+              </button>
+            </div>
+          </div>
+
+          <!-- Preview de respuesta -->
+          <div class="respuesta-preview">
+            <div *ngIf="pregunta.tipo === TipoPregunta.ABIERTA" class="preview-input">
+              <textarea disabled placeholder="El estudiante escribirá aquí su respuesta..."></textarea>
+            </div>
+            <div *ngIf="pregunta.tipo === TipoPregunta.NUMERICA" class="preview-input">
+              <input type="number" disabled placeholder="Número" />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>

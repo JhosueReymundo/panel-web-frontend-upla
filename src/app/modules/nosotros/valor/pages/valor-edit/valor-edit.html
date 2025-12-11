@@ -1,0 +1,20 @@
+<div class="edit-container">
+    <div class="edit-header">
+    <h2>Editar Valor</h2>
+    <p class="subtitle" *ngIf="valor">{{ valor.titulo }}</p>
+    </div>
+
+    <div *ngIf="loadingData" class="loading">
+    <div class="spinner"></div>
+    <p>Cargando datos...</p>
+    </div>
+
+    <div *ngIf="!loadingData && valor" class="form-wrapper">
+    <app-valor-form
+        [valor]="valor"
+        [loading]="loading"
+        (submitForm)="onSubmit($event)"
+        (cancel)="onCancel()">
+    </app-valor-form>
+    </div>
+</div>

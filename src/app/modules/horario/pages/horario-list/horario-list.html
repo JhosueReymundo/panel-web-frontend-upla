@@ -1,0 +1,51 @@
+<div class="page-container">
+  <div class="page-header">
+    <div>
+      <h1>Gestión de Horarios</h1>
+      <p class="subtitle">Administra los Horarios de los laboratorios</p>
+    </div>
+    <button class="btn-primary" routerLink="/horarios/nuevo">
+      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <line x1="12" y1="5" x2="12" y2="19"></line>
+        <line x1="5" y1="12" x2="19" y2="12"></line>
+      </svg>
+      Nuevo Horario
+    </button>
+  </div>
+
+  <div *ngIf="loading" class="loading">
+    <div class="spinner"></div>
+    <p>Cargando horarios...</p>
+  </div>
+
+  <div *ngIf="error" class="error-message">
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <circle cx="12" cy="12" r="10"></circle>
+      <line x1="12" y1="8" x2="12" y2="12"></line>
+      <line x1="12" y1="16" x2="12.01" y2="16"></line>
+    </svg>
+    <p>{{ error }}</p>
+    <button class="btn-secondary" (click)="loadHorarios()">Reintentar</button>
+  </div>
+
+  <div *ngIf="!loading && !error" class="documentos-grid">
+    <app-horario-card 
+      *ngFor="let horario of horarios"
+      [horario]="horario"
+      (delete)="deleteHorario($event)"
+      (toggleActivo)="toggleActivo($event)">
+    </app-horario-card>
+
+    <div *ngIf="horarios.length === 0" class="empty-state">
+      <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+        <polyline points="14 2 14 8 20 8"></polyline>
+      </svg>
+      <p>No hay horarios registrados</p>
+      <button class="btn-primary" routerLink="/horarios/nuevo">
+        Subir Primer horario
+      </button>
+    </div>
+  </div>
+</div>
+

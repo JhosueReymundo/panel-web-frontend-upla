@@ -1,0 +1,110 @@
+<form [formGroup]="form" (ngSubmit)="onSubmit()" class="home-form">
+  <!-- Información del Hero -->
+  <div class="form-section">
+    <h3>Información del Hero</h3>
+    
+    <div class="form-group">
+      <label for="titulo">Título *</label>
+      <input
+        id="titulo"
+        type="text"
+        formControlName="titulo"
+        placeholder="Ej: Bienvenido al Centro de Cómputo"
+        [class.error]="titulo?.invalid && titulo?.touched"
+      />
+      <div class="error-message" *ngIf="titulo?.invalid && titulo?.touched">
+        <span *ngIf="titulo?.errors?.['required']">El título es requerido</span>
+        <span *ngIf="titulo?.errors?.['minlength']">Mínimo 3 caracteres</span>
+        <span *ngIf="titulo?.errors?.['maxlength']">Máximo 255 caracteres</span>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="subtitulo">Subtítulo</label>
+      <textarea
+        id="subtitulo"
+        formControlName="subtitulo"
+        placeholder="Ej: Tu aliado tecnológico para el éxito académico"
+        rows="3"
+        [class.error]="subtitulo?.invalid && subtitulo?.touched"
+      ></textarea>
+      <div class="error-message" *ngIf="subtitulo?.invalid && subtitulo?.touched">
+        <span *ngIf="subtitulo?.errors?.['maxlength']">Máximo 255 caracteres</span>
+      </div>
+    </div>
+
+    <div class="form-row">
+      <div class="form-group form-group-checkbox">
+        <label class="checkbox-label">
+          <input type="checkbox" formControlName="esVisible" />
+          <span>Visible (mostrar en el sitio público)</span>
+        </label>
+      </div>
+    </div>
+  </div>
+
+  <!-- Subir Imagen -->
+  <div class="form-section">
+    <h3>Imagen de Fondo</h3>
+    
+    <div class="upload-area">
+      <div class="file-input-wrapper">
+        <input
+          id="imagen"
+          type="file"
+          accept="image/jpeg,image/jpg,image/png,image/webp,image/gif"
+          (change)="onFileSelected($event)"
+          class="file-input"
+        />
+        <label for="imagen" class="file-input-label">
+          <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+            <circle cx="8.5" cy="8.5" r="1.5"></circle>
+            <polyline points="21 15 16 10 5 21"></polyline>
+          </svg>
+          <span class="file-input-text">
+            {{ selectedFile ? 'Cambiar imagen' : (home ? 'Cambiar imagen de fondo' : 'Seleccionar imagen de fondo') }}
+          </span>
+          <small>JPG, PNG, WEBP o GIF (máx. 5MB)</small>
+        </label>
+      </div>
+
+      <div class="file-preview" *ngIf="previewUrl">
+        <div class="preview-content">
+          <div class="image-preview">
+            <img [src]="previewUrl" alt="Preview" />
+          </div>
+          <div class="preview-info">
+            <p class="file-name" *ngIf="selectedFile">{{ selectedFile.name }}</p>
+            <p class="file-name" *ngIf="!selectedFile && home">Imagen actual</p>
+            <small *ngIf="selectedFile" class="file-size">
+              {{ (selectedFile.size / 1024 / 1024).toFixed(2) }} MB
+            </small>
+          </div>
+        </div>
+        <button type="button" class="btn-remove-file" (click)="removeFile()">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+            <line x1="6" y1="6" x2="18" y2="18"></line>
+          </svg>
+        </button>
+      </div>
+    </div>
+
+    <div class="upload-info">
+      <p>* Al editar, puedes dejar la imagen actual sin cambios o seleccionar una nueva para reemplazarla.</p>
+      <p>* Las imágenes se mostrarán como fondo del hero en la página principal.</p>
+    </div>
+  </div>
+
+  <!-- Botones -->
+  <div class="form-actions">
+    <button type="button" class="btn-secondary" (click)="onCancel()" [disabled]="loading">
+      Cancelar
+    </button>
+    <button type="submit" class="btn-primary" [disabled]="loading || form.invalid">
+      <span *ngIf="!loading">{{ home ? 'Actualizar' : 'Crear' }} Hero</span>
+      <span *ngIf="loading">{{ home ? 'Actualizando...' : 'Creando...' }}</span>
+    </button>
+  </div>
+</form>

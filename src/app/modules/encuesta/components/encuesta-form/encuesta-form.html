@@ -1,0 +1,90 @@
+<form [formGroup]="form" (ngSubmit)="onSubmit()" class="encuesta-form">
+  
+  <div class="form-section">
+    <h3>Información de la Encuesta</h3>
+    
+    <div class="form-group">
+      <label for="nombre">Nombre de la Encuesta *</label>
+      <input
+        id="nombre"
+        type="text"
+        formControlName="nombre"
+        placeholder="Ej: Encuesta de Satisfacción 2025"
+        [class.error]="nombre?.invalid && nombre?.touched"
+      />
+      <div class="error-message" *ngIf="nombre?.invalid && nombre?.touched">
+        <span *ngIf="nombre?.errors?.['required']">El nombre es requerido</span>
+        <span *ngIf="nombre?.errors?.['minlength']">Mínimo 3 caracteres</span>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="descripcion">Descripción</label>
+      <textarea
+        id="descripcion"
+        formControlName="descripcion"
+        rows="4"
+        placeholder="Describe el propósito de esta encuesta..."
+      ></textarea>
+    </div>
+  </div>
+
+  <div class="form-section">
+    <h3>Periodo de Vigencia</h3>
+    
+    <div class="form-row">
+      <div class="form-group">
+        <label for="fecha_inicio">Fecha de Inicio</label>
+        <input
+          id="fecha_inicio"
+          type="datetime-local"
+          formControlName="fecha_inicio"
+        />
+        <small class="help-text">Cuando la encuesta estará disponible</small>
+      </div>
+
+      <div class="form-group">
+        <label for="fecha_fin">Fecha de Fin</label>
+        <input
+          id="fecha_fin"
+          type="datetime-local"
+          formControlName="fecha_fin"
+        />
+        <small class="help-text">Cuando la encuesta cerrará</small>
+      </div>
+    </div>
+  </div>
+
+  <div class="form-section">
+    <h3>Configuración</h3>
+    
+    <div class="form-row">
+      <div class="form-group">
+        <label for="estado">Estado</label>
+        <select id="estado" formControlName="estado">
+          <option [value]="EstadoEncuesta.BORRADOR">Borrador</option>
+          <option [value]="EstadoEncuesta.ACTIVA">Activa</option>
+          <option [value]="EstadoEncuesta.CERRADA">Cerrada</option>
+        </select>
+      </div>
+
+      <div class="form-group form-group-checkbox">
+        <label class="checkbox-label">
+          <input type="checkbox" formControlName="esVisible" />
+          <span>Visible al público</span>
+        </label>
+        <small class="help-text">Los estudiantes podrán ver y responder esta encuesta</small>
+      </div>
+    </div>
+  </div>
+
+  <div class="form-actions">
+    <button type="button" class="btn-secondary" (click)="onCancel()" [disabled]="loading">
+      Cancelar
+    </button>
+    <button type="submit" class="btn-primary" [disabled]="loading || form.invalid">
+      <span *ngIf="!loading">{{ encuesta ? 'Actualizar' : 'Crear' }} Encuesta</span>
+      <span *ngIf="loading">{{ encuesta ? 'Actualizando...' : 'Creando...' }}</span>
+    </button>
+  </div>
+</form>

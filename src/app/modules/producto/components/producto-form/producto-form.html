@@ -1,0 +1,192 @@
+<form [formGroup]="form" (ngSubmit)="onSubmit()" class="producto-form">
+  <!-- Información Básica -->
+  <div class="form-section">
+    <h3>Información del Producto</h3>
+    
+    <div class="form-row">
+      <div class="form-group">
+        <label for="nombre">Nombre del Producto *</label>
+        <input
+          id="nombre"
+          type="text"
+          formControlName="nombre"
+          placeholder="Ej: Sistema de Gestión Académica"
+          [class.error]="nombre?.invalid && nombre?.touched"
+        />
+        <div class="error-message" *ngIf="nombre?.invalid && nombre?.touched">
+          <span *ngIf="nombre?.errors?.['required']">El nombre es requerido</span>
+          <span *ngIf="nombre?.errors?.['minlength']">Mínimo 1 carácter</span>
+          <span *ngIf="nombre?.errors?.['maxlength']">Máximo 255 caracteres</span>
+        </div>
+      </div>
+
+      <div class="form-group form-group-small">
+        <label for="icono">Ícono</label>
+        <input
+          id="icono"
+          type="text"
+          formControlName="icono"
+          placeholder="🚀"
+          [class.error]="icono?.invalid && icono?.touched"
+        />
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="descripcion">Descripción *</label>
+      <textarea
+        id="descripcion"
+        formControlName="descripcion"
+        rows="4"
+        placeholder="Describe el producto..."
+        [class.error]="descripcion?.invalid && descripcion?.touched"
+      ></textarea>
+      <div class="error-message" *ngIf="descripcion?.invalid && descripcion?.touched">
+        <span *ngIf="descripcion?.errors?.['required']">La descripción es requerida</span>
+        <span *ngIf="descripcion?.errors?.['minlength']">Mínimo 10 caracteres</span>
+      </div>
+    </div>
+
+    <div class="form-row">
+      <div class="form-group">
+        <label for="estado">Estado *</label>
+        <select id="estado" formControlName="estado" [class.error]="estado?.invalid && estado?.touched">
+          <option *ngFor="let est of estadosDisponibles" [value]="est">
+            {{ est }}
+          </option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="version">Versión</label>
+        <input
+          id="version"
+          type="text"
+          formControlName="version"
+          placeholder="v1.0.0"
+          [class.error]="version?.invalid && version?.touched"
+        />
+      </div>
+
+      <div class="form-group">
+        <label for="usuarios">Usuarios</label>
+        <input
+          id="usuarios"
+          type="text"
+          formControlName="usuarios"
+          placeholder="Ej: 1000+ usuarios"
+          [class.error]="usuarios?.invalid && usuarios?.touched"
+        />
+      </div>
+    </div>
+
+    <div class="form-row">
+      <div class="form-group form-group-small">
+        <label for="orden">Orden</label>
+        <input
+          id="orden"
+          type="number"
+          formControlName="orden"
+          min="0"
+        />
+      </div>
+
+      <div class="form-group form-group-checkbox">
+        <label class="checkbox-label">
+          <input type="checkbox" formControlName="esVisible" />
+          <span>Visible en el sitio público</span>
+        </label>
+      </div>
+    </div>
+  </div>
+
+  <!-- Características -->
+  <div class="form-section">
+    <div class="section-header">
+      <h3>Características del Producto</h3>
+      <button type="button" class="btn-icon btn-add" (click)="addCaracteristica()">
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <line x1="12" y1="5" x2="12" y2="19"></line>
+          <line x1="5" y1="12" x2="19" y2="12"></line>
+        </svg>
+        Agregar Característica
+      </button>
+    </div>
+
+    <div formArrayName="caracteristicas" class="caracteristicas-list">
+      <div *ngFor="let car of caracteristicas.controls; let i = index" 
+           [formGroupName]="i" 
+           class="caracteristica-item">
+        <div class="caracteristica-number">{{ i + 1 }}</div>
+        
+        <div class="caracteristica-content">
+          <input type="hidden" formControlName="id" />
+          <input type="hidden" formControlName="orden" />
+          
+          <input
+            type="text"
+            formControlName="descripcion"
+            placeholder="Escribe una característica..."
+            [class.error]="car.get('descripcion')?.invalid && car.get('descripcion')?.touched"
+          />
+          <div class="error-message" *ngIf="car.get('descripcion')?.invalid && car.get('descripcion')?.touched">
+            <span *ngIf="car.get('descripcion')?.errors?.['required']">Este campo es requerido</span>
+            <span *ngIf="car.get('descripcion')?.errors?.['minlength']">Mínimo 1 carácter</span>
+          </div>
+        </div>
+
+        <div class="caracteristica-actions">
+          <button type="button" 
+                  class="btn-icon btn-move" 
+                  (click)="moveCaracteristicaUp(i)"
+                  [disabled]="i === 0"
+                  title="Subir">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polyline points="18 15 12 9 6 15"></polyline>
+            </svg>
+          </button>
+          
+          <button type="button" 
+                  class="btn-icon btn-move" 
+                  (click)="moveCaracteristicaDown(i)"
+                  [disabled]="i === caracteristicas.length - 1"
+                  title="Bajar">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polyline points="6 9 12 15 18 9"></polyline>
+            </svg>
+          </button>
+          
+          <button type="button" 
+                  class="btn-icon btn-delete" 
+                  (click)="removeCaracteristica(i)"
+                  [disabled]="caracteristicas.length === 1"
+                  title="Eliminar">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polyline points="3 6 5 6 21 6"></polyline>
+              <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+            </svg>
+          </button>
+        </div>
+      </div>
+
+      <div *ngIf="caracteristicas.length === 0" class="empty-caracteristicas">
+        <p>No hay características. Agrega al menos una.</p>
+        <button type="button" class="btn-secondary" (click)="addCaracteristica()">
+          Agregar Primera Característica
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Botones -->
+  <div class="form-actions">
+    <button type="button" class="btn-secondary" (click)="onCancel()" [disabled]="loading">
+      Cancelar
+    </button>
+    <button type="submit" class="btn-primary" [disabled]="loading || form.invalid">
+      <span *ngIf="!loading">{{ producto ? 'Actualizar' : 'Crear' }} Producto</span>
+      <span *ngIf="loading">{{ producto ? 'Actualizando...' : 'Creando...' }}</span>
+    </button>
+  </div>
+</form>
+

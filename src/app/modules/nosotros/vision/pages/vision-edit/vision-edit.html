@@ -1,0 +1,22 @@
+<div class="edit-container">
+    <div class="edit-header">
+    <h2>Editar Visión</h2>
+    <p class="subtitle" *ngIf="vision">
+        {{ vision.isActive ? 'Visión Activa' : 'Visión Inactiva' }}
+    </p>
+    </div>
+
+    <div *ngIf="loadingData" class="loading">
+    <div class="spinner"></div>
+    <p>Cargando datos...</p>
+    </div>
+
+    <div *ngIf="!loadingData && vision" class="form-wrapper">
+    <app-vision-form
+        [vision]="vision"
+        [loading]="loading"
+        (submitForm)="onSubmit($event)"
+        (cancel)="onCancel()">
+    </app-vision-form>
+    </div>
+</div>

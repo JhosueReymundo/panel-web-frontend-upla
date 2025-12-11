@@ -1,0 +1,19 @@
+<div class="page-container">
+  <div class="page-header">
+    <h1>Editar Hero</h1>
+  </div>
+
+  <div *ngIf="loadingData" class="loading">
+    <div class="spinner"></div>
+    <p>Cargando datos...</p>
+  </div>
+
+  <div *ngIf="!loadingData && home" class="form-wrapper">
+    <app-home-form
+      [home]="home"
+      [loading]="loading"
+      (submitForm)="onSubmit($event)"
+      (cancel)="onCancel()">
+    </app-home-form>
+  </div>
+</div>

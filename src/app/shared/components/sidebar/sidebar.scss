@@ -1,0 +1,317 @@
+.sidebar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  width: 80px; // Por defecto colapsado (solo iconos)
+  background: linear-gradient(180deg, #1a1a1a 0%, #0f0f0f 100%);
+  border-right: 1px solid rgba(16, 185, 129, 0.1);
+  display: flex;
+  flex-direction: column;
+  transition: width 0.3s ease;
+  z-index: 1000;
+  box-shadow: 4px 0 20px rgba(0, 0, 0, 0.5);
+  overflow: hidden;
+
+  // Al hacer hover se expande
+  &:hover {
+    width: 280px;
+
+    .brand-text,
+    .nav-text,
+    .user-info,
+    .nav-arrow {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .sidebar-header {
+      justify-content: space-between;
+    }
+
+    .user-section {
+      flex-direction: row;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .brand {
+      justify-content: flex-start;
+    }
+  }
+
+  // Textos ocultos por defecto
+  .brand-text,
+  .nav-text,
+  .user-info,
+  .nav-arrow {
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+  }
+}
+
+// Header
+.sidebar-header {
+  padding: 1.5rem;
+  border-bottom: 1px solid rgba(16, 185, 129, 0.1);
+  display: flex;
+  align-items: center;
+  //justify-content: center; // Centrado cuando está colapsado
+  transition: justify-content 0.3s ease;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  justify-content: center; // Centrado cuando está colapsado
+  transition: justify-content 0.3s ease;
+}
+
+.brand-icon {
+  width: 45px;
+  height: 45px;
+  background: linear-gradient(135deg, #10b981, #059669);
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 15px rgba(16, 185, 129, 0.3);
+  flex-shrink: 0; // No se reduce
+
+  svg {
+    width: 26px;
+    height: 26px;
+    color: white;
+  }
+}
+
+.brand-text {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: white;
+  letter-spacing: 0.5px;
+  white-space: nowrap; // No se rompe el texto
+}
+
+// User Section
+.user-section {
+  padding: 1.5rem;
+  border-bottom: 1px solid rgba(16, 185, 129, 0.1);
+  display: flex;
+  flex-direction: column; // Por defecto en columna
+  align-items: center;
+  gap: 0.5rem;
+  transition: all 0.3s ease;
+}
+
+.user-avatar {
+  width: 50px;
+  height: 50px;
+  background: linear-gradient(135deg, #10b981, #059669);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 1.2rem;
+  color: white;
+  flex-shrink: 0;
+  box-shadow: 0 4px 15px rgba(16, 185, 129, 0.3);
+}
+
+.user-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.user-name {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: white;
+  margin: 0 0 0.25rem 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.user-role {
+  font-size: 0.8rem;
+  color: #10b981;
+  font-weight: 500;
+}
+
+// Navigation
+.sidebar-nav {
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden; // Evita scroll horizontal
+  padding: 1rem 0;
+
+  &::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: rgba(16, 185, 129, 0.2);
+    border-radius: 3px;
+
+    &:hover {
+      background: rgba(16, 185, 129, 0.3);
+    }
+  }
+}
+
+.nav-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.nav-item {
+  margin: 0.25rem 0.75rem; // Margen más pequeño cuando está colapsado
+}
+
+.nav-link {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.875rem 1rem;
+  color: #9ca3af;
+  text-decoration: none;
+  border-radius: 10px;
+  transition: all 0.3s ease;
+  font-size: 0.95rem;
+  font-weight: 500;
+  border: none;
+  background: transparent;
+  width: 100%;
+  cursor: pointer;
+  position: relative;
+  justify-content: flex-start; // Por defecto centrado cuando está colapsado
+
+  &:hover {
+    background: rgba(16, 185, 129, 0.1);
+    color: #10b981;
+
+    .nav-icon {
+      color: #10b981;
+      transform: translateX(3px);
+    }
+  }
+
+  &.active {
+    background: linear-gradient(90deg, rgba(16, 185, 129, 0.15), rgba(16, 185, 129, 0.05));
+    color: #10b981;
+    border-left: 3px solid #10b981;
+
+    .nav-icon {
+      color: #10b981;
+    }
+  }
+}
+
+// Cuando el sidebar está colapsado, centra los iconos
+.sidebar:not(:hover) {
+  .nav-link {
+    justify-content: center;
+    padding: 0.875rem 0.5rem;
+  }
+
+  .nav-item {
+    margin: 0.25rem 0.5rem;
+  }
+}
+
+.nav-icon {
+  width: 22px;
+  height: 22px;
+  color: #6b7280;
+  flex-shrink: 0;
+  transition: all 0.3s ease;
+}
+
+.nav-text {
+  flex: 1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.nav-arrow {
+  width: 16px;
+  height: 16px;
+  color: #6b7280;
+  transition: transform 0.3s ease;
+  margin-left: auto;
+  flex-shrink: 0;
+
+  &.rotated {
+    transform: rotate(90deg);
+  }
+}
+
+// Submenu
+.submenu {
+  list-style: none;
+  padding: 0.5rem 0 0.5rem 3rem;
+  margin: 0.5rem 0 0 0;
+  border-left: 2px solid rgba(16, 185, 129, 0.2);
+  margin-left: 1.5rem;
+}
+
+.submenu-link {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.75rem 1rem;
+  color: #9ca3af;
+  text-decoration: none;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+  font-size: 0.9rem;
+
+  &:hover {
+    background: rgba(16, 185, 129, 0.08);
+    color: #10b981;
+
+    .submenu-dot {
+      background: #10b981;
+      box-shadow: 0 0 10px rgba(16, 185, 129, 0.5);
+    }
+  }
+
+  &.active {
+    background: rgba(16, 185, 129, 0.1);
+    color: #10b981;
+
+    .submenu-dot {
+      background: #10b981;
+      box-shadow: 0 0 10px rgba(16, 185, 129, 0.5);
+    }
+  }
+}
+
+.submenu-dot {
+  width: 8px;
+  height: 8px;
+  background: #4b5563;
+  border-radius: 50%;
+  flex-shrink: 0;
+  transition: all 0.3s ease;
+}
+
+@media (max-width: 1024px) {
+  .sidebar {
+    transform: translateX(-100%);
+
+    &.open {
+      transform: translateX(0);
+    }
+  }
+}

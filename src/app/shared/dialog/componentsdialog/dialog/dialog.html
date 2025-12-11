@@ -1,0 +1,51 @@
+<!-- ============================================ -->
+<!-- 📁 shared/components/dialog/dialog.component.html -->
+<!-- ============================================ -->
+<div class="dialog-overlay" *ngIf="isVisible" (click)="onBackdropClick($event)">
+  <div class="dialog-container" [ngClass]="config?.type">
+    
+    <!-- Icono -->
+    <div class="dialog-icon" [innerHTML]="getIcon()"></div>
+
+    <!-- Título -->
+    <h2 class="dialog-title">{{ config?.title }}</h2>
+
+    <!-- Mensaje -->
+    <p class="dialog-message">{{ config?.message }}</p>
+
+    <!-- Botones -->
+    <div class="dialog-actions">
+      <!-- Para confirmaciones -->
+      <ng-container *ngIf="config?.type === 'confirm'">
+        <button class="btn btn-cancel" (click)="onCancel()">
+          {{ config?.cancelText || 'Cancelar' }}
+        </button>
+        <button class="btn btn-confirm" (click)="onConfirm()">
+          {{ config?.confirmText || 'Confirmar' }}
+        </button>
+      </ng-container>
+
+      <!-- Para notificaciones -->
+      <ng-container *ngIf="config?.type !== 'confirm'">
+        <button class="btn btn-close" (click)="close()">
+          Entendido
+        </button>
+      </ng-container>
+    </div>
+
+    <!-- Botón de cerrar (X) solo para notificaciones -->
+    <button 
+      *ngIf="config?.type !== 'confirm'" 
+      class="dialog-close" 
+      (click)="close()"
+      aria-label="Cerrar">
+      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <line x1="18" y1="6" x2="6" y2="18"></line>
+        <line x1="6" y1="6" x2="18" y2="18"></line>
+      </svg>
+    </button>
+
+  </div>
+</div>
+ 
+

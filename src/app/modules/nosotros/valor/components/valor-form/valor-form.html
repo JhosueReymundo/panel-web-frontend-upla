@@ -1,0 +1,88 @@
+<form [formGroup]="form" (ngSubmit)="onSubmit()" class="valores-form">
+      
+      <div class="form-section">
+        <h3>Información del Valor</h3>
+        
+        <div class="form-group">
+          <label for="titulo">Título del Valor *</label>
+          <input
+            id="titulo"
+            type="text"
+            formControlName="titulo"
+            placeholder="Ej: Integridad"
+            [class.error]="titulo?.invalid && titulo?.touched"
+          />
+          <div class="error-message" *ngIf="titulo?.invalid && titulo?.touched">
+            <span *ngIf="titulo?.errors?.['required']">El título es requerido</span>
+            <span *ngIf="titulo?.errors?.['minlength']">Mínimo 3 caracteres</span>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="icono">Icono (Emoji) *</label>
+          <input
+            id="icono"
+            type="text"
+            formControlName="icono"
+            placeholder="⭐"
+            maxlength="10"
+            [class.error]="icono?.invalid && icono?.touched"
+          />
+          <small class="help-text">Usa un emoji que represente el valor</small>
+          <div class="error-message" *ngIf="icono?.invalid && icono?.touched">
+            <span *ngIf="icono?.errors?.['required']">El icono es requerido</span>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="descripcion">Descripción *</label>
+          <textarea
+            id="descripcion"
+            formControlName="descripcion"
+            rows="5"
+            placeholder="Describe este valor institucional..."
+            [class.error]="descripcion?.invalid && descripcion?.touched"
+          ></textarea>
+          <div class="error-message" *ngIf="descripcion?.invalid && descripcion?.touched">
+            <span *ngIf="descripcion?.errors?.['required']">La descripción es requerida</span>
+            <span *ngIf="descripcion?.errors?.['minlength']">Mínimo 10 caracteres</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-section">
+        <h3>Configuración</h3>
+        
+        <div class="form-row">
+          <div class="form-group">
+            <label for="orden">Orden de Visualización</label>
+            <input
+              id="orden"
+              type="number"
+              formControlName="orden"
+              placeholder="0"
+              min="0"
+            />
+            <small class="help-text">Define el orden en que aparecerá en el sitio web</small>
+          </div>
+
+          <div class="form-group form-group-checkbox">
+            <label class="checkbox-label">
+              <input type="checkbox" formControlName="isVisible" />
+              <span>Visible en el sitio web</span>
+            </label>
+            <small class="help-text">Este valor aparecerá en la sección "Nosotros"</small>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-actions">
+        <button type="button" class="btn-secondary" (click)="onCancel()" [disabled]="loading">
+          Cancelar
+        </button>
+        <button type="submit" class="btn-primary" [disabled]="loading || form.invalid">
+          <span *ngIf="!loading">{{ valor ? 'Actualizar' : 'Crear' }} Valor</span>
+          <span *ngIf="loading">{{ valor ? 'Actualizando...' : 'Creando...' }}</span>
+        </button>
+      </div>
+    </form>

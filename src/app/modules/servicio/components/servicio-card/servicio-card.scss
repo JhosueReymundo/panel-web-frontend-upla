@@ -1,0 +1,168 @@
+.servicio-card {
+  background: #1a1a1a;
+  border: 1px solid rgba(16, 185, 129, 0.2);
+  border-radius: 12px;
+  overflow: hidden;
+  transition: all 0.3s;
+
+  &:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 24px rgba(16, 185, 129, 0.2);
+    border-color: #10b981;
+  }
+
+  &.hidden {
+    opacity: 0.6;
+    border-color: rgba(239, 68, 68, 0.3);
+  }
+}
+
+.card-header {
+  padding: 1.5rem;
+  background: rgba(16, 185, 129, 0.05);
+  border-bottom: 1px solid rgba(16, 185, 129, 0.1);
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+
+  .icon {
+    font-size: 2.5rem;
+    line-height: 1;
+  }
+
+  .orden-badge, .visibility-badge {
+    margin-left: auto;
+    padding: 0.25rem 0.75rem;
+    border-radius: 12px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+  }
+
+  .orden-badge {
+    background: rgba(16, 185, 129, 0.2);
+    color: #10b981;
+  }
+
+  .visibility-badge {
+    transition: all 0.3s;
+
+    svg {
+      width: 14px;
+      height: 14px;
+    }
+
+    &.visible {
+      background: rgba(16, 185, 129, 0.2);
+      color: #10b981;
+    }
+
+    &.oculto {
+      background: rgba(239, 68, 68, 0.2);
+      color: #ef4444;
+    }
+  }
+}
+
+.card-body {
+  padding: 1.5rem;
+
+  .title {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: white;
+    margin: 0 0 0.75rem 0;
+  }
+
+  .description {
+    color: #9ca3af;
+    font-size: 0.9rem;
+    line-height: 1.6;
+    margin: 0 0 1rem 0;
+  }
+
+  .detalles-preview {
+    h4 {
+      font-size: 0.875rem;
+      color: #10b981;
+      margin: 0 0 0.5rem 0;
+      font-weight: 600;
+    }
+
+    ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+
+      li {
+        padding: 0.5rem 0;
+        color: #d1d5db;
+        font-size: 0.875rem;
+        border-bottom: 1px solid rgba(16, 185, 129, 0.1);
+
+        &:last-child {
+          border-bottom: none;
+        }
+
+        &.more {
+          color: #10b981;
+          font-weight: 500;
+        }
+      }
+    }
+  }
+}
+
+.card-footer {
+  padding: 1rem 1.5rem;
+  background: rgba(16, 185, 129, 0.03);
+  border-top: 1px solid rgba(16, 185, 129, 0.1);
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.5rem;
+}
+
+.btn-icon {
+  padding: 0.5rem;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.3s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  // 🔥 NUEVO: Estilos para botón de visibilidad
+  &.btn-visibility {
+    background: rgba(139, 92, 246, 0.1);
+    color: #8b5cf6;
+
+    &:hover {
+      background: rgba(139, 92, 246, 0.2);
+      transform: translateY(-2px);
+    }
+  }
+
+  &.btn-edit {
+    background: rgba(59, 130, 246, 0.1);
+    color: #3b82f6;
+
+    &:hover {
+      background: rgba(59, 130, 246, 0.2);
+      transform: translateY(-2px);
+    }
+  }
+
+  &.btn-delete {
+    background: rgba(239, 68, 68, 0.1);
+    color: #ef4444;
+
+    &:hover {
+      background: rgba(239, 68, 68, 0.2);
+      transform: translateY(-2px);
+    }
+  }
+}
+

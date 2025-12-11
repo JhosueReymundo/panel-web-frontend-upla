@@ -1,0 +1,14 @@
+<div class="page-container">
+  <div class="page-header">
+    <h1>Nuevo Comunicado</h1>
+    <p class="subtitle">Crea un nuevo comunicado institucional</p>
+  </div>
+
+  <div class="form-wrapper">
+    <app-comunicado-form
+      [loading]="loading"
+      (submitForm)="onSubmit($event)"
+      (cancel)="onCancel()">
+    </app-comunicado-form>
+  </div>
+</div>

@@ -1,0 +1,49 @@
+<div class="list-container">
+      <div class="list-header">
+        <div>
+          <h2>Valores</h2>
+          <p class="subtitle">Gestiona los valores institucionales</p>
+        </div>
+        <button class="btn-primary" routerLink="/nosotros/valores/nuevo">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="12" y1="5" x2="12" y2="19"></line>
+            <line x1="5" y1="12" x2="19" y2="12"></line>
+          </svg>
+          Nuevo Valor
+        </button>
+      </div>
+
+      <div *ngIf="loading" class="loading">
+        <div class="spinner"></div>
+        <p>Cargando valores...</p>
+      </div>
+
+      <div *ngIf="error" class="error-message">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="12" cy="12" r="10"></circle>
+          <line x1="12" y1="8" x2="12" y2="12"></line>
+          <line x1="12" y1="16" x2="12.01" y2="16"></line>
+        </svg>
+        <p>{{ error }}</p>
+        <button class="btn-secondary" (click)="loadValores()">Reintentar</button>
+      </div>
+
+      <div *ngIf="!loading && !error" class="valores-grid">
+        <app-valor-card 
+          *ngFor="let valor of valores"
+          [valor]="valor"
+          (delete)="deleteValor($event)"
+          (toggleVisibility)="toggleVisibility($event)">
+        </app-valor-card>
+
+        <div *ngIf="valores.length === 0" class="empty-state">
+          <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+          </svg>
+          <p>No hay valores registrados</p>
+          <button class="btn-primary" routerLink="/nosotros/valores/nuevo">
+            Agregar Primer Valor
+          </button>
+        </div>
+      </div>
+    </div>

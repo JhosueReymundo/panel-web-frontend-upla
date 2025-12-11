@@ -1,0 +1,52 @@
+<div class="page-container">
+  <div class="page-header">
+    <div>
+      <h1>Gestión de Productos</h1>
+      <p class="subtitle">Administra los productos que ofreces</p>
+    </div>
+    <button class="btn-primary" routerLink="/productos/nuevo">
+      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <line x1="12" y1="5" x2="12" y2="19"></line>
+        <line x1="5" y1="12" x2="19" y2="12"></line>
+      </svg>
+      Nuevo Producto
+    </button>
+  </div>
+
+  <div *ngIf="loading" class="loading">
+    <div class="spinner"></div>
+    <p>Cargando productos...</p>
+  </div>
+
+  <div *ngIf="error" class="error-message">
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <circle cx="12" cy="12" r="10"></circle>
+      <line x1="12" y1="8" x2="12" y2="12"></line>
+      <line x1="12" y1="16" x2="12.01" y2="16"></line>
+    </svg>
+    <p>{{ error }}</p>
+    <button class="btn-secondary" (click)="loadProductos()">Reintentar</button>
+  </div>
+
+  <div *ngIf="!loading && !error" class="productos-grid">
+    <app-producto-card 
+      *ngFor="let producto of productos"
+      [producto]="producto"
+      (delete)="deleteProducto($event)"
+      (toggleVisibility)="toggleVisibility($event)">
+    </app-producto-card>
+
+    <div *ngIf="productos.length === 0" class="empty-state">
+      <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <circle cx="12" cy="12" r="10"></circle>
+        <line x1="12" y1="8" x2="12" y2="12"></line>
+        <line x1="12" y1="16" x2="12.01" y2="16"></line>
+      </svg>
+      <p>No hay productos registrados</p>
+      <button class="btn-primary" routerLink="/productos/nuevo">
+        Crear Primer Producto
+      </button>
+    </div>
+  </div>
+</div>
+

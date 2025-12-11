@@ -1,0 +1,61 @@
+<div class="list-container">
+      <div class="list-header">
+        <div>
+          <h2>Visión</h2>
+          <p class="subtitle">Administra la visión institucional</p>
+        </div>
+        <button class="btn-primary" routerLink="/nosotros/vision/nuevo">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="12" y1="5" x2="12" y2="19"></line>
+            <line x1="5" y1="12" x2="19" y2="12"></line>
+          </svg>
+          Nueva Visión
+        </button>
+      </div>
+
+      <div *ngIf="loading" class="loading">
+        <div class="spinner"></div>
+        <p>Cargando visiones...</p>
+      </div>
+
+      <div *ngIf="error" class="error-message">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="12" cy="12" r="10"></circle>
+          <line x1="12" y1="8" x2="12" y2="12"></line>
+          <line x1="12" y1="16" x2="12.01" y2="16"></line>
+        </svg>
+        <p>{{ error }}</p>
+        <button class="btn-secondary" (click)="loadVisiones()">Reintentar</button>
+      </div>
+
+      <div *ngIf="!loading && !error" class="misiones-grid">
+        <app-vision-card 
+          *ngFor="let vision of visiones"
+          [vision]="vision"
+          (delete)="deleteVision($event)"
+          (activate)="activateVision($event)">
+        </app-vision-card>
+
+        <div *ngIf="visiones.length === 0" class="empty-state">
+          <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="10"></circle>
+            <line x1="12" y1="8" x2="12" y2="16"></line>
+            <line x1="8" y1="12" x2="16" y2="12"></line>
+          </svg>
+          <p>No hay visiones registradas</p>
+          <button class="btn-primary" routerLink="/nosotros/vision/nuevo">
+            Crear Primera visión
+          </button>
+        </div>
+      </div>
+
+      <div *ngIf="!loading && visiones.length > 0" class="info-box">
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="12" cy="12" r="10"></circle>
+          <line x1="12" y1="16" x2="12" y2="12"></line>
+          <line x1="12" y1="8" x2="12.01" y2="8"></line>
+        </svg>
+        <p>Solo una visión puede estar activa a la vez. La visión activa es la que se muestra en el sitio web.</p>
+      </div>
+    </div>
+

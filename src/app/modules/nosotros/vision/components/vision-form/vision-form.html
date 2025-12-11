@@ -1,0 +1,33 @@
+<form [formGroup]="form" (ngSubmit)="onSubmit()" class="mision-form">
+      
+    <div class="form-section">
+    <h3>Contenido de la Visión</h3>
+    
+    <div class="form-group">
+        <label for="contenido">Visión Institucional *</label>
+        <textarea
+        id="contenido"
+        formControlName="contenido"
+        rows="8"
+        placeholder="Describe la visión institucional..."
+        [class.error]="contenido?.invalid && contenido?.touched"
+        ></textarea>
+        <div class="error-message" *ngIf="contenido?.invalid && contenido?.touched">
+        <span *ngIf="contenido?.errors?.['required']">El contenido es requerido</span>
+        <span *ngIf="contenido?.errors?.['minlength']">Mínimo 10 caracteres</span>
+        </div>
+        <small class="help-text">Define el propósito fundamental de la institución</small>
+    </div>
+    </div>
+
+    <div class="form-actions">
+    <button type="button" class="btn-secondary" (click)="onCancel()" [disabled]="loading">
+        Cancelar
+    </button>
+    <button type="submit" class="btn-primary" [disabled]="loading || form.invalid">
+        <span *ngIf="!loading">{{ vision ? 'Actualizar' : 'Crear' }} Visión</span>
+        <span *ngIf="loading">{{ vision ? 'Actualizando...' : 'Creando...' }}</span>
+    </button>
+    </div>
+</form>
+

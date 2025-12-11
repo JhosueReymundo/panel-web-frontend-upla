@@ -1,0 +1,111 @@
+<form [formGroup]="form" (ngSubmit)="onSubmit()" class="comunicado-form">
+  
+  <!-- Información del Comunicado -->
+  <div class="form-section">
+    <h3>Información del Comunicado</h3>
+    
+    <div class="form-group">
+      <label for="titulo">Título *</label>
+      <input
+        id="titulo"
+        type="text"
+        formControlName="titulo"
+        placeholder="Título del comunicado"
+        [class.error]="titulo?.invalid && titulo?.touched"
+      />
+      <div class="error-message" *ngIf="titulo?.invalid && titulo?.touched">
+        <span *ngIf="titulo?.errors?.['required']">El título es requerido</span>
+        <span *ngIf="titulo?.errors?.['minlength']">Mínimo 5 caracteres</span>
+        <span *ngIf="titulo?.errors?.['maxlength']">Máximo 255 caracteres</span>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="contenido">Contenido *</label>
+      <textarea
+        id="contenido"
+        formControlName="contenido"
+        rows="10"
+        placeholder="Escribe el contenido del comunicado..."
+        [class.error]="contenido?.invalid && contenido?.touched"
+      ></textarea>
+      <div class="error-message" *ngIf="contenido?.invalid && contenido?.touched">
+        <span *ngIf="contenido?.errors?.['required']">El contenido es requerido</span>
+        <span *ngIf="contenido?.errors?.['minlength']">Mínimo 20 caracteres</span>
+      </div>
+      <div class="char-count">
+        {{ form.get('contenido')?.value?.length || 0 }} caracteres
+      </div>
+    </div>
+  </div>
+
+  <!-- Fechas y Configuración -->
+  <div class="form-section">
+    <h3>Publicación y Configuración</h3>
+    
+    <div class="form-row">
+      <div class="form-group">
+        <label for="fechaPublicacion">Fecha de Publicación</label>
+        <input
+          id="fechaPublicacion"
+          type="datetime-local"
+          formControlName="fechaPublicacion"
+        />
+        <small class="help-text">Si se deja vacío, se publicará inmediatamente al activar visibilidad</small>
+      </div>
+
+      <div class="form-group">
+        <label for="fechaExpiracion">Fecha de Expiración</label>
+        <input
+          id="fechaExpiracion"
+          type="datetime-local"
+          formControlName="fechaExpiracion"
+        />
+        <small class="help-text">Opcional: fecha límite de visualización</small>
+      </div>
+    </div>
+
+    <div class="form-row">
+      <div class="form-group">
+        <label for="estado">Estado</label>
+        <select id="estado" formControlName="estado">
+          <option value="borrador">Borrador</option>
+          <option value="publicado">Publicado</option>
+          <option value="archivado">Archivado</option>
+        </select>
+        <small class="help-text">Puedes mantenerlo como borrador y usar solo la visibilidad</small>
+      </div>
+
+      <div class="form-group form-group-checkbox">
+        <label class="checkbox-label">
+          <input type="checkbox" formControlName="esVisible" />
+          <span>Visible en el sitio público</span>
+        </label>
+        <small class="help-text">Este es el control principal de visibilidad</small>
+      </div>
+    </div>
+
+    <div class="info-note">
+      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <circle cx="12" cy="12" r="10"></circle>
+        <line x1="12" y1="16" x2="12" y2="12"></line>
+        <line x1="12" y1="8" x2="12.01" y2="8"></line>
+      </svg>
+      <div>
+        <strong>Nota:</strong> El campo "esVisible" controla si el comunicado es visible al público. 
+        Puedes usarlo independientemente del estado.
+      </div>
+    </div>
+  </div>
+
+  <!-- Botones -->
+  <div class="form-actions">
+    <button type="button" class="btn-secondary" (click)="onCancel()" [disabled]="loading">
+      Cancelar
+    </button>
+    <button type="submit" class="btn-primary" [disabled]="loading || form.invalid">
+      <span *ngIf="!loading">{{ comunicado ? 'Actualizar' : 'Crear' }} Comunicado</span>
+      <span *ngIf="loading">{{ comunicado ? 'Actualizando...' : 'Creando...' }}</span>
+    </button>
+  </div>
+</form>

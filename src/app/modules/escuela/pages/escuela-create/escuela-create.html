@@ -1,0 +1,41 @@
+<div class="page-container">
+  <div class="page-header">
+    <h1>Nueva Escuela</h1>
+  </div>
+
+  <div class="form-card">
+    <form [formGroup]="form" (ngSubmit)="onSubmit()">
+      <!-- Nombre Escuela -->
+      <div class="form-group">
+        <label for="nombreEscuela">Nombre de la Escuela *</label>
+        <input
+          id="nombreEscuela"
+          type="text"
+          formControlName="nombreEscuela"
+          placeholder="Ej: Escuela de Ingeniería"
+          [class.error]="nombreEscuela?.invalid && nombreEscuela?.touched"
+        />
+        <div class="error-message" *ngIf="nombreEscuela?.invalid && nombreEscuela?.touched">
+          <span *ngIf="nombreEscuela?.errors?.['required']">El nombre es requerido</span>
+          <span *ngIf="nombreEscuela?.errors?.['minlength']">Mínimo 3 caracteres</span>
+        </div>
+      </div>
+
+      <!-- Error general -->
+      <div class="alert-error" *ngIf="error">
+        {{ error }}
+      </div>
+
+      <!-- Botones -->
+      <div class="form-actions">
+        <button type="button" class="btn-secondary" (click)="onCancel()" [disabled]="loading">
+          Cancelar
+        </button>
+        <button type="submit" class="btn-primary" [disabled]="loading || form.invalid">
+          <span *ngIf="!loading">Crear Escuela</span>
+          <span *ngIf="loading">Creando...</span>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

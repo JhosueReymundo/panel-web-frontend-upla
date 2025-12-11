@@ -1,0 +1,14 @@
+<div class="page-container">
+  <div class="page-header">
+    <h1>Nueva Encuesta</h1>
+    <p class="subtitle">Después podrás agregar las preguntas</p>
+  </div>
+
+  <div class="form-wrapper">
+    <app-encuesta-form
+      [loading]="loading"
+      (submitForm)="onSubmit($event)"
+      (cancel)="onCancel()">
+    </app-encuesta-form>
+  </div>
+</div>

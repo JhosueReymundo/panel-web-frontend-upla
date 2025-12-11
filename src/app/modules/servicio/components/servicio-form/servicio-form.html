@@ -1,0 +1,161 @@
+<form [formGroup]="form" (ngSubmit)="onSubmit()" class="servicio-form">
+  <!-- Información Básica -->
+  <div class="form-section">
+    <h3>Información del Servicio</h3>
+    
+    <div class="form-row">
+      <div class="form-group">
+        <label for="titulo">Título *</label>
+        <input
+          id="titulo"
+          type="text"
+          formControlName="titulo"
+          placeholder="Ej: Mantenimiento de Laboratorios"
+          [class.error]="titulo?.invalid && titulo?.touched"
+        />
+        <div class="error-message" *ngIf="titulo?.invalid && titulo?.touched">
+          <span *ngIf="titulo?.errors?.['required']">El título es requerido</span>
+          <span *ngIf="titulo?.errors?.['minlength']">Mínimo 5 caracteres</span>
+          <span *ngIf="titulo?.errors?.['maxlength']">Máximo 200 caracteres</span>
+        </div>
+      </div>
+
+      <div class="form-group form-group-small">
+        <label for="icono">Ícono *</label>
+        <input
+          id="icono"
+          type="text"
+          formControlName="icono"
+          placeholder="💻"
+          [class.error]="icono?.invalid && icono?.touched"
+        />
+        <small>Emoji o símbolo</small>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="descripcion">Descripción *</label>
+      <textarea
+        id="descripcion"
+        formControlName="descripcion"
+        rows="4"
+        placeholder="Describe el servicio..."
+        [class.error]="descripcion?.invalid && descripcion?.touched"
+      ></textarea>
+      <div class="error-message" *ngIf="descripcion?.invalid && descripcion?.touched">
+        <span *ngIf="descripcion?.errors?.['required']">La descripción es requerida</span>
+        <span *ngIf="descripcion?.errors?.['minlength']">Mínimo 20 caracteres</span>
+        <span *ngIf="descripcion?.errors?.['maxlength']">Máximo 1000 caracteres</span>
+      </div>
+    </div>
+
+    <div class="form-row">
+      <div class="form-group form-group-small">
+        <label for="orden">Orden</label>
+        <input
+          id="orden"
+          type="number"
+          formControlName="orden"
+          min="0"
+        />
+      </div>
+
+      <div class="form-group form-group-checkbox">
+        <label class="checkbox-label">
+          <input type="checkbox" formControlName="esVisible" />
+          <span>Visible en el sitio público</span>
+        </label>
+      </div>
+    </div>
+  </div>
+
+  <!-- Detalles del Servicio -->
+  <div class="form-section">
+    <div class="section-header">
+      <h3>Detalles del Servicio</h3>
+      <button type="button" class="btn-icon btn-add" (click)="addDetalle()">
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <line x1="12" y1="5" x2="12" y2="19"></line>
+          <line x1="5" y1="12" x2="19" y2="12"></line>
+        </svg>
+        Agregar Detalle
+      </button>
+    </div>
+
+    <div formArrayName="detalles" class="detalles-list">
+      <div *ngFor="let detalle of detalles.controls; let i = index" 
+           [formGroupName]="i" 
+           class="detalle-item">
+        <div class="detalle-number">{{ i + 1 }}</div>
+        
+        <div class="detalle-content">
+          <input type="hidden" formControlName="id" />
+          <input type="hidden" formControlName="orden" />
+          
+          <input
+            type="text"
+            formControlName="detalle"
+            placeholder="Escribe un detalle..."
+            [class.error]="detalle.get('detalle')?.invalid && detalle.get('detalle')?.touched"
+          />
+          <div class="error-message" *ngIf="detalle.get('detalle')?.invalid && detalle.get('detalle')?.touched">
+            <span *ngIf="detalle.get('detalle')?.errors?.['required']">Este campo es requerido</span>
+            <span *ngIf="detalle.get('detalle')?.errors?.['minlength']">Mínimo 5 caracteres</span>
+          </div>
+        </div>
+
+        <div class="detalle-actions">
+          <button type="button" 
+                  class="btn-icon btn-move" 
+                  (click)="moveDetalleUp(i)"
+                  [disabled]="i === 0"
+                  title="Subir">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polyline points="18 15 12 9 6 15"></polyline>
+            </svg>
+          </button>
+          
+          <button type="button" 
+                  class="btn-icon btn-move" 
+                  (click)="moveDetalleDown(i)"
+                  [disabled]="i === detalles.length - 1"
+                  title="Bajar">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polyline points="6 9 12 15 18 9"></polyline>
+            </svg>
+          </button>
+          
+          <button type="button" 
+                  class="btn-icon btn-delete" 
+                  (click)="removeDetalle(i)"
+                  [disabled]="detalles.length === 1"
+                  title="Eliminar">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polyline points="3 6 5 6 21 6"></polyline>
+              <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+            </svg>
+          </button>
+        </div>
+      </div>
+
+      <div *ngIf="detalles.length === 0" class="empty-detalles">
+        <p>No hay detalles. Agrega al menos uno.</p>
+        <button type="button" class="btn-secondary" (click)="addDetalle()">
+          Agregar Primer Detalle
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Botones de Acción -->
+  <div class="form-actions">
+    <button type="button" class="btn-secondary" (click)="onCancel()" [disabled]="loading">
+      Cancelar
+    </button>
+    <button type="submit" class="btn-primary" [disabled]="loading || form.invalid">
+      <span *ngIf="!loading">{{ servicio ? 'Actualizar' : 'Crear' }} Servicio</span>
+      <span *ngIf="loading">{{ servicio ? 'Actualizando...' : 'Creando...' }}</span>
+    </button>
+  </div>
+</form>
+

@@ -1,0 +1,21 @@
+<div class="page-container">
+  <div class="page-header">
+    <h1>Editar Servicio</h1>
+  </div>
+
+  <!-- Loading -->
+  <div *ngIf="loadingData" class="loading">
+    <div class="spinner"></div>
+    <p>Cargando datos...</p>
+  </div>
+
+  <!-- Form -->
+  <div *ngIf="!loadingData && servicio" class="form-wrapper">
+    <app-servicio-form
+      [servicio]="servicio"
+      [loading]="loading"
+      (submitForm)="onSubmit($event)"
+      (cancel)="onCancel()">
+    </app-servicio-form>
+  </div>
+</div>

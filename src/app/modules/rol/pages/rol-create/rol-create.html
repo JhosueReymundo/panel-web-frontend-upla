@@ -1,0 +1,41 @@
+<div class="page-container">
+  <div class="page-header">
+    <h1>Nuevo Rol</h1>
+  </div>
+
+  <div class="form-card">
+    <form [formGroup]="form" (ngSubmit)="onSubmit()">
+      <div class="form-group">
+        <label for="nombreRol">Nombre de Rol *</label>
+        <input
+          id="nombreRol"
+          type="text"
+          formControlName="nombreRol"
+          placeholder="Ej: Hola"
+          [class.error]="nombreRol?.invalid && nombreRol?.touched"
+        />
+        <div class="error-message" *ngIf="nombreRol?.invalid && nombreRol?.touched">
+          <span *ngIf="nombreRol?.errors?.['required']">El nombre es requerido</span>
+          <span *ngIf="nombreRol?.errors?.['minlength']">Mínimo 3 caracteres</span>
+        </div>
+      </div>
+
+      <!-- Error general -->
+      <div class="alert-error" *ngIf="error">
+        {{ error }}
+      </div>
+
+      <!-- Botones -->
+      <div class="form-actions">
+        <button type="button" class="btn-secondary" (click)="onCancel()" [disabled]="loading">
+          Cancelar
+        </button>
+        <button type="submit" class="btn-primary" [disabled]="loading || form.invalid">
+          <span *ngIf="!loading">Crear Rol</span>
+          <span *ngIf="loading">Creando...</span>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+
