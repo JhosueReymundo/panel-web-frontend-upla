@@ -17,7 +17,7 @@ export const routes: Routes = [
     {
         path:'',
         loadComponent:()=>import('./shared/components/layout/layout').then(m=>m.Layout),
-        //canActivate: [authGuard],
+        canActivate: [authGuard],
         children:[
             {
                 path:'inicio',

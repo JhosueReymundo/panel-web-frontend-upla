@@ -14,9 +14,9 @@ export class DependenciaService {
   
   constructor(private http: HttpClient) {} */
   private get apiUrl(): string {
-    return `${this.apiConfig.getApiUrl()}/dependencia`;
-    }  
-    constructor(private http: HttpClient, private apiConfig: ApiConfigServiceTs) { }
+  return `${this.apiConfig.getApiUrl()}/dependencia`;
+  }  
+  constructor(private http: HttpClient, private apiConfig: ApiConfigServiceTs) { }
 
   // GET ALL
   getAll(): Observable<Dependencia[]> {
