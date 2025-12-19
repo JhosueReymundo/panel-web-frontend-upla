@@ -3,14 +3,19 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from '../../../../environments/environment';
 import { Comunicado, CreateComunicadoDto, UpdateComunicadoDto } from '../models/comunicado.interface';
+import { ApiConfigServiceTs } from '../../../config/api-config.service.ts';
 
 @Injectable({
   providedIn: 'root',
 })
 export class Comunicadoservice {
-  private readonly apiUrl = `${environment.apiUrl}/comunicados`;
+  /* private readonly apiUrl = `${environment.apiUrl}/comunicados`;
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) {} */
+  private get apiUrl(): string {
+  return `${this.apiConfig.getApiUrl()}/comunicados`;
+  }  
+  constructor(private http: HttpClient, private apiConfig: ApiConfigServiceTs) { }
 
   // ========== CRUD ==========
   getAll(): Observable<Comunicado[]> {

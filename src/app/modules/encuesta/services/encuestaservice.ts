@@ -3,15 +3,21 @@ import { environment } from '../../../../environments/environment';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { CreateEncuestaDto, CreateOpcionDto, CreatePreguntaDto, Encuesta, EstadoEncuesta, Opcion, Pregunta, Respuesta, RespuestaCompletaDto, UpdateEncuestaDto, UpdatePreguntaDto } from '../models/encuesta.interface';
+import { ApiConfigServiceTs } from '../../../config/api-config.service.ts';
 
 @Injectable({
   providedIn: 'root',
 })
 export class Encuestaservice {
  
-  private readonly apiUrl = `${environment.apiUrl}/encuestas`;
+  /* private readonly apiUrl = `${environment.apiUrl}/encuestas`;
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) {} */
+
+  private get apiUrl(): string {
+  return `${this.apiConfig.getApiUrl()}/encuestas`;
+  }  
+  constructor(private http: HttpClient, private apiConfig: ApiConfigServiceTs) { }
 
   // ========== ENCUESTAS ==========
   getAll(): Observable<Encuesta[]> {

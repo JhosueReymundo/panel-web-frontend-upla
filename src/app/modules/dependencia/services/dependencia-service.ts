@@ -3,15 +3,20 @@ import { Injectable } from '@angular/core';
 import { CreateDependenciaDto, Dependencia, UpdateDependenciaDto } from '../models/dependencia.interface';
 import { Observable } from 'rxjs';
 import { environment } from '../../../../environments/environment';
+import { ApiConfigServiceTs } from '../../../config/api-config.service.ts';
 
 @Injectable({
   providedIn: 'root',
 })
 export class DependenciaService {
   
-  private readonly apiUrl = `${environment.apiUrl}/dependencia`;
+  /* private readonly apiUrl = `${environment.apiUrl}/dependencia`;
   
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) {} */
+  private get apiUrl(): string {
+    return `${this.apiConfig.getApiUrl()}/dependencia`;
+    }  
+    constructor(private http: HttpClient, private apiConfig: ApiConfigServiceTs) { }
 
   // GET ALL
   getAll(): Observable<Dependencia[]> {

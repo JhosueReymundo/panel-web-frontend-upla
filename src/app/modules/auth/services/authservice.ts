@@ -13,7 +13,7 @@ export class Authservice {
   
   //private readonly apiUrl= `${environment.apiUrl}/auth`;
   private get apiUrl(): string {
-    return `${this.apiConfig.getApiUrl()}/productos`;
+    return `${this.apiConfig.getApiUrl()}/auth`;
   }
   
   

@@ -14,13 +14,9 @@ export class Rolservice {
     //constructor(private http: HttpClient) {}
 
     private get apiUrl(): string {
-    return `${this.apiConfig.getApiUrl()}/productos`;
-  }
-  
-  constructor(
-    private http: HttpClient,
-    private apiConfig: ApiConfigServiceTs  
-  ) { }
+    return `${this.apiConfig.getApiUrl()}/rol`;
+    }  
+    constructor(private http: HttpClient, private apiConfig: ApiConfigServiceTs) { }
   
     // GET ALL
     getAll(): Observable<Rol[]> {

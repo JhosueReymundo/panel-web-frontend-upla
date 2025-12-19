@@ -18,7 +18,7 @@ export class Documentogservice {
 
   constructor(
     private http: HttpClient,
-    private apiConfig: ApiConfigServiceTs  // ← Inyectar servicio
+    private apiConfig: ApiConfigServiceTs 
   ) {}
 
   getAll(): Observable<DocumentoGestion[]> {
