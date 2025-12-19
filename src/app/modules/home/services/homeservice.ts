@@ -3,14 +3,24 @@ import { Injectable } from '@angular/core';
 import { environment } from '../../../../environments/environment';
 import { Observable } from 'rxjs';
 import { CreateHomeDto, Home, UpdateHomeDto } from '../model/home.interface';
+import { ApiConfigServiceTs } from '../../../config/api-config.service.ts';
 
 @Injectable({
   providedIn: 'root',
 })
 export class Homeservice {
-  private readonly apiUrl = `${environment.apiUrl}/home`;
+  /* private readonly apiUrl = `${environment.apiUrl}/home`;
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) {} */
+
+  private get apiUrl(): string {
+      return `${this.apiConfig.getApiUrl()}/home`;
+    }
+  
+    constructor(
+      private http: HttpClient,
+      private apiConfig: ApiConfigServiceTs 
+    ) {}
 
   getAll(): Observable<Home[]> {
     return this.http.get<Home[]>(this.apiUrl);
@@ -53,7 +63,11 @@ export class Homeservice {
   }
 
   // Obtener URL de la imagen para visualizar
-  getImagenUrl(imagenFondo: string): string {
+  /* getImagenUrl(imagenFondo: string): string {
     return `${environment.apiUrl.replace('/api', '')}/uploads/${imagenFondo}`;
+  } */
+
+    getImagenUrl(imagenFondo: string): string {
+    return `${this.apiConfig.getBaseUrl()}/uploads/${imagenFondo}`;
   }
 } 

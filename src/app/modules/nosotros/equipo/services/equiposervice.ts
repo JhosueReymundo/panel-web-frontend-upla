@@ -3,14 +3,22 @@ import { environment } from '../../../../../environments/environment';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { CreateEquipoDto, Equipo, UpdateEquipoDto } from '../models/equipo.interface';
+import { ApiConfigServiceTs } from '../../../../config/api-config.service.ts';
 
 @Injectable({
   providedIn: 'root',
 })
 export class Equiposervice {
-  private readonly apiUrl = `${environment.apiUrl}/nosotros/equipo`;
+  /* private readonly apiUrl = `${environment.apiUrl}/nosotros/equipo`;
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) {} */
+
+  private get apiUrl(): string {
+    return `${this.apiConfig.getApiUrl()}/nosotros/equipo`;
+  }
+  
+  constructor(private http: HttpClient, private apiConfig: ApiConfigServiceTs
+  ) { }
 
   getAll(): Observable<Equipo[]> {
     return this.http.get<Equipo[]>(this.apiUrl);

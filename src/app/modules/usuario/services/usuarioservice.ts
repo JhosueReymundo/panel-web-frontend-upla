@@ -3,17 +3,33 @@ import { Injectable } from '@angular/core';
 import { forkJoin, Observable } from 'rxjs';
 import { CreateUsuarioDto, Dependencia, Escuela, Rol, UpdateUsuarioDto, Usuario } from '../models/usuario.interface';
 import { environment } from '../../../../environments/environment';
+import { ApiConfigServiceTs } from '../../../config/api-config.service.ts';
 
 @Injectable({
   providedIn: 'root',
 })
 export class Usuarioservice {
-   private readonly apiUrl = `${environment.apiUrl}/usuario`;
+   /* private readonly apiUrl = `${environment.apiUrl}/usuario`;
   private readonly rolUrl = `${environment.apiUrl}/rol`;
   private readonly escuelaUrl = `${environment.apiUrl}/escuela`;
   private readonly dependenciaUrl = `${environment.apiUrl}/dependencia`;
 
   constructor(private http: HttpClient) {}
+ */
+
+  private get apiUrl(): string {
+  return `${this.apiConfig.getApiUrl()}/usuario`;
+  }  
+  private get rolUrl(): string {
+  return `${this.apiConfig.getApiUrl()}/rol`;
+  }  
+  private get escuelaUrl(): string {
+  return `${this.apiConfig.getApiUrl()}/escuela`;
+  }  
+  private get dependenciaUrl(): string {
+  return `${this.apiConfig.getApiUrl()}/dependencia`;
+  }  
+  constructor(private http: HttpClient, private apiConfig: ApiConfigServiceTs) { }
 
   // ========== USUARIOS ==========
   

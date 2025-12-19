@@ -3,17 +3,25 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from '../../../../../environments/environment';
 import { CreateMisionDto, Mision, UpdateMisionDto } from '../models/mision.model';
+import { ApiConfigServiceTs } from '../../../../config/api-config.service.ts';
 
 @Injectable({
   providedIn: 'root',
 })
 export class Misionservice {
-  private readonly apiUrl = `${environment.apiUrl}/nosotros/mision`;
+  /* private readonly apiUrl = `${environment.apiUrl}/nosotros/mision`;
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) {} */
+
+  private get apiUrl(): string {
+    return `${this.apiConfig.getApiUrl()}/nosotros/mision`;
+  }
+  
+  constructor(private http: HttpClient, private apiConfig: ApiConfigServiceTs
+  ) { }
 
   getAll(): Observable<Mision[]> {
-    return this.http.get<Mision[]>(`${environment.apiUrl}/nosotros/misiones`);
+    return this.http.get<Mision[]>(`${this.apiConfig.getApiUrl()}/nosotros/misiones`);
   }
 
   getActive(): Observable<Mision> {

@@ -3,17 +3,27 @@ import { Injectable } from '@angular/core';
 import { environment } from '../../../../../environments/environment';
 import { Observable } from 'rxjs';
 import { CreateVisionDto, UpdateVisionDto, Vision } from '../models/vision.model';
+import { ApiConfigServiceTs } from '../../../../config/api-config.service.ts';
 
 @Injectable({
   providedIn: 'root',
 })
 export class Visionservice {
-  private readonly apiUrl = `${environment.apiUrl}/nosotros/vision`;
+  /* private readonly apiUrl = `${environment.apiUrl}/nosotros/vision`;
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) {} */
+  private get apiUrl(): string {
+      return `${this.apiConfig.getApiUrl()}/nosotros/vision`;
+    }
+    
+    constructor(private http: HttpClient, private apiConfig: ApiConfigServiceTs
+    ) { }
 
-  getAll(): Observable<Vision[]> {
+  /* getAll(): Observable<Vision[]> {
     return this.http.get<Vision[]>(`${environment.apiUrl}/nosotros/visiones`);
+  } */
+ getAll(): Observable<Vision[]> {
+    return this.http.get<Vision[]>(`${this.apiConfig.getApiUrl()}/nosotros/visiones`);
   }
 
   getActive(): Observable<Vision> {

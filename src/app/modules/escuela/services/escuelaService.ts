@@ -3,14 +3,20 @@ import { Injectable } from '@angular/core';
 import { CreateEscuelaDto, Escuela, UpdateEscuelaDto } from '../models/escuela.interface';
 import { Observable } from 'rxjs';
 import { environment } from '../../../../environments/environment';
+import { ApiConfigServiceTs } from '../../../config/api-config.service.ts';
 
 @Injectable({
   providedIn: 'root',
 })
 export class EscuelaService {
-  private readonly apiUrl = `${environment.apiUrl}/escuela`;
+  /* private readonly apiUrl = `${environment.apiUrl}/escuela`;
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) {} */
+
+  private get apiUrl(): string {
+  return `${this.apiConfig.getApiUrl()}/escuela`;
+  }  
+  constructor(private http: HttpClient, private apiConfig: ApiConfigServiceTs) { }
 
   // GET ALL
   getAll(): Observable<Escuela[]> {

@@ -3,14 +3,22 @@ import { environment } from '../../../../../environments/environment';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { CreateValorDto, UpdateValorDto, Valor } from '../models/valor.interface';
+import { ApiConfigServiceTs } from '../../../../config/api-config.service.ts';
 
 @Injectable({
   providedIn: 'root',
 })
 export class Valorservice {
-  private readonly apiUrl = `${environment.apiUrl}/nosotros/valores`;
+  /* private readonly apiUrl = `${environment.apiUrl}/nosotros/valores`;
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) {} */
+
+  private get apiUrl(): string {
+    return `${this.apiConfig.getApiUrl()}/nosotros/valores`;
+  }
+  
+  constructor(private http: HttpClient, private apiConfig: ApiConfigServiceTs
+  ) { }
 
   getAll(): Observable<Valor[]> {
     return this.http.get<Valor[]>(this.apiUrl);
