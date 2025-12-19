@@ -3,15 +3,23 @@ import { Injectable } from '@angular/core';
 import { environment } from '../../../../environments/environment';
 import { Observable } from 'rxjs';
 import { CreateDocumentoDto, DocumentoGestion, UpdateDocumentoDto } from '../models/documento.interface';
+import { ApiConfigServiceTs } from '../../../config/api-config.service.ts';
 
 @Injectable({
   providedIn: 'root',
 })
 export class Documentogservice {
   
-  private readonly apiUrl = `${environment.apiUrl}/documentogestion`;
+  /* private readonly apiUrl = `${environment.apiUrl}/documentogestion`;
+  constructor(private http: HttpClient) {} */
+  private get apiUrl(): string {
+    return `${this.apiConfig.getApiUrl()}/documentogestion`;
+  }
 
-  constructor(private http: HttpClient) {}
+  constructor(
+    private http: HttpClient,
+    private apiConfig: ApiConfigServiceTs  // ← Inyectar servicio
+  ) {}
 
   getAll(): Observable<DocumentoGestion[]> {
     return this.http.get<DocumentoGestion[]>(this.apiUrl);
@@ -54,13 +62,20 @@ export class Documentogservice {
     return this.http.patch<DocumentoGestion>(`${this.apiUrl}/${id}`, { esActivo });
   }
 
-  // Obtener URL de descarga
-  getDownloadUrl(id: number): string {
+  /* getDownloadUrl(id: number): string {
     return `${this.apiUrl}/descargar/${id}`;
   }
 
-  // Obtener URL del archivo para visualizar
   getArchivoUrl(archivoPdf: string): string {
     return `${environment.apiUrl.replace('/api', '')}/uploads/${archivoPdf}`;
+  } */
+ // ✅ Descargar (dinámico)
+  getDownloadUrl(id: number): string {
+    return `${this.apiConfig.getApiUrl()}/documentogestion/descargar/${id}`;
+  }
+
+  // ✅ Visualizar PDF (dinámico)
+  getArchivoUrl(archivoPdf: string): string {
+    return `${this.apiConfig.getBaseUrl()}/uploads/${archivoPdf}`;
   }
 }

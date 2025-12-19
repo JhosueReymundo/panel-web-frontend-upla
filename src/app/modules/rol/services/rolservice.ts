@@ -3,14 +3,24 @@ import { environment } from '../../../../environments/environment';
 import { HttpClient } from '@angular/common/http';
 import { CreateRolDto, Rol, UpdateRolDto } from '../models/rol.interface';
 import { Observable } from 'rxjs';
+import { ApiConfigServiceTs } from '../../../config/api-config.service.ts';
 
 @Injectable({
   providedIn: 'root',
 })
 export class Rolservice {
-  private readonly apiUrl = `${environment.apiUrl}/rol`;
+  //private readonly apiUrl = `${environment.apiUrl}/rol`;
   
-    constructor(private http: HttpClient) {}
+    //constructor(private http: HttpClient) {}
+
+    private get apiUrl(): string {
+    return `${this.apiConfig.getApiUrl()}/productos`;
+  }
+  
+  constructor(
+    private http: HttpClient,
+    private apiConfig: ApiConfigServiceTs  
+  ) { }
   
     // GET ALL
     getAll(): Observable<Rol[]> {

@@ -4,14 +4,24 @@ import { environment } from '../../../../environments/environment';
 import { Observable } from 'rxjs';
 import { CreateServicioDetalleDto, CreateServicioDto, Servicio,
          ServicioDetalle, UpdateServicioDetalleDto, UpdateServicioDto } from '../models/servicio.interface';
+import { ApiConfigServiceTs } from '../../../config/api-config.service.ts';
 
 @Injectable({
   providedIn: 'root',
 })
 export class Servicioservice {
-   private readonly apiUrl = `${environment.apiUrl}/servicios`;
+   /* private readonly apiUrl = `${environment.apiUrl}/servicios`;
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) {} */
+
+  private get apiUrl(): string {
+      return `${this.apiConfig.getApiUrl()}/servicios`;
+    }
+    
+    constructor(
+      private http: HttpClient,
+      private apiConfig: ApiConfigServiceTs  
+    ) { }
 
   // ========== SERVICIOS ==========
   

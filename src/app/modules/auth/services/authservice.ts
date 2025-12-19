@@ -4,13 +4,19 @@ import { Router } from '@angular/router';
 import { BehaviorSubject, interval, Observable, Subscription, tap } from 'rxjs';
 import { LoginDto, LoginResponse, RefreshDto } from '../models/auth.interface';
 import { environment } from '../../../../environments/environment';
+import { ApiConfigServiceTs } from '../../../config/api-config.service.ts';
 
 @Injectable({
   providedIn: 'root',
 })
 export class Authservice {
   
-  private readonly apiUrl= `${environment.apiUrl}/auth`;
+  //private readonly apiUrl= `${environment.apiUrl}/auth`;
+  private get apiUrl(): string {
+    return `${this.apiConfig.getApiUrl()}/productos`;
+  }
+  
+  
    
   private currentUserSubject = new BehaviorSubject<any>(null);
   public currentUser$ = this.currentUserSubject.asObservable();
@@ -18,7 +24,7 @@ export class Authservice {
   private refreshTokenInterval$?: Subscription;
   private readonly REFRESH_INTERVAL = 13 * 60 * 1000;
 
-  constructor(private http: HttpClient, private router: Router) {
+  constructor(private http: HttpClient, private router: Router, private apiConfig: ApiConfigServiceTs ) {
     // Cargar usuario del localStorage al iniciar
     const user = this.getUserFromStorage();
     if (user) {

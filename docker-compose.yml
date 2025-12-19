@@ -1,8 +1,28 @@
+#version: '3.8'
+#services:
+#  angular-app:
+#    build: .
+#    container_name: frontend_angular
+#    restart: unless-stopped
+#    ports:
+#      - "4200:80"
+
 version: '3.8'
 services:
   angular-app:
-    build: .
+    build: 
+      context: .
+      # SIN build args - configuración dinámica
     container_name: frontend_angular
     restart: unless-stopped
     ports:
-      - "4200:80"
+      - "4200:80"  # Cambia si necesitas otro puerto
+    # SIN environment variables para API - dinámico por Nginx
+    
+    # Opcional: healthcheck
+    healthcheck:
+      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost/"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s

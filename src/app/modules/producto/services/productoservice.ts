@@ -3,15 +3,24 @@ import { Injectable } from '@angular/core';
 import { environment } from '../../../../environments/environment';
 import { CreateProductoDto, Producto, UpdateProductoDto } from '../models/producto.interface';
 import { Observable } from 'rxjs';
+import { ApiConfigServiceTs } from '../../../config/api-config.service.ts';
 
 @Injectable({
   providedIn: 'root',
 })
 export class Productoservice {
   
-  private readonly apiUrl = `${environment.apiUrl}/productos`;
+  /* private readonly apiUrl = `${environment.apiUrl}/productos`;  
+  constructor(private http: HttpClient ){ } */
 
-  constructor(private http: HttpClient) {}
+  private get apiUrl(): string {
+    return `${this.apiConfig.getApiUrl()}/productos`;
+  }
+  
+  constructor(
+    private http: HttpClient,
+    private apiConfig: ApiConfigServiceTs  
+  ) { }
 
   getAll(): Observable<Producto[]> {
     return this.http.get<Producto[]>(this.apiUrl);

@@ -3,15 +3,23 @@ import { environment } from '../../../../environments/environment';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { CreateHorarioDto, Horario, UpdateHorarioDto } from '../models/horario.interface';
+import { ApiConfigServiceTs } from '../../../config/api-config.service.ts';
 
 @Injectable({
   providedIn: 'root',
 })
 export class Horarioservice {
   
-  private readonly apiUrl=`${environment.apiUrl}/horarios`;
+  /* private readonly apiUrl=`${environment.apiUrl}/horarios`;
+  constructor(private http:HttpClient){} */
+  private get apiUrl(): string {
+    return `${this.apiConfig.getApiUrl()}/horarios`;
+  }
 
-  constructor(private http:HttpClient){}
+  constructor(
+    private http: HttpClient,
+    private apiConfig: ApiConfigServiceTs  
+  ) { }
 
   getAll(): Observable<Horario[]> {
       return this.http.get<Horario[]>(this.apiUrl);
@@ -52,14 +60,21 @@ export class Horarioservice {
       return this.http.patch<Horario>(`${this.apiUrl}/${id}`, { esVisible });
     }
   
-    // Obtener URL de descarga
-    getDownloadUrl(id: number): string {
+    /* getDownloadUrl(id: number): string {
       return `${this.apiUrl}/descargar/${id}`;
     }
   
-    // Obtener URL del archivo para visualizar
     getArchivoUrl(archivoPdf: string): string {
       return `${environment.apiUrl.replace('/api', '')}/uploads/${archivoPdf}`;
+    } */
+   // ✅ Descargar (dinámico)
+    getDownloadUrl(id: number): string {
+      return `${this.apiConfig.getApiUrl()}/horarios/descargar/${id}`;
+    }
+
+    // ✅ Visualizar PDF (dinámico)
+    getArchivoUrl(archivoPdf: string): string {
+      return `${this.apiConfig.getBaseUrl()}/uploads/${archivoPdf}`;
     }
   
 }
