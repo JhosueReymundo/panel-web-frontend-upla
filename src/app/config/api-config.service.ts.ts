@@ -116,14 +116,14 @@ export class ApiConfigServiceTs {
   
   private logConfig(): void {
     if (isPlatformBrowser(this.platformId)) {
-      console.group('🌐 Configuración de API Detectada (Angular)');
+      /* console.group('🌐 Configuración de API Detectada (Angular)');
       console.log('🔧 Fuente:', this.config.source);
       console.log('🌐 API URL:', this.config.apiUrl);
       console.log('🏠 Backend Host:', this.config.backendHost);
       console.log('🎯 Rango:', this.config.clientRange);
       console.log('🚀 Producción:', this.config.isProduction);
       console.log('🖥️  URL actual:', window.location.href);
-      console.groupEnd();
+      console.groupEnd(); */
     }
   }
   

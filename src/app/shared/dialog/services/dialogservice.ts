@@ -28,85 +28,6 @@ export class Dialogservice {
 
   constructor(private ngZone:NgZone){}
 
-  // ========== MÉTODOS DE CONFIRMACIÓN ==========
-
-  /* confirm(title: string, message: string, confirmText = 'Confirmar', cancelText = 'Cancelar'): Promise<boolean> {
-    return new Promise((resolve) => {
-      // ✅ Ejecutar dentro de NgZone para asegurar detección de cambios
-      this.ngZone.run(() => {
-        this.dialogSubject.next({
-          type: 'confirm',
-          title,
-          message,
-          confirmText,
-          cancelText
-        });
-      });
-
-      const subscription = this.result$.subscribe((result) => {
-        // ✅ Resolver dentro de NgZone
-        this.ngZone.run(() => {
-          resolve(result.confirmed);
-        });
-        subscription.unsubscribe();
-      });
-    });
-  }
-
-  // ========== MÉTODOS DE NOTIFICACIÓN ==========
-
-  success(title: string, message: string, duration = 3000): void {
-    this.ngZone.run(() => {
-      this.dialogSubject.next({
-        type: 'success',
-        title,
-        message,
-        duration
-      });
-    });
-  }
-
-  error(title: string, message: string, duration = 4000): void {
-    this.ngZone.run(() => {
-      this.dialogSubject.next({
-        type: 'error',
-        title,
-        message,
-        duration
-      });
-    });
-  }
-
-  warning(title: string, message: string, duration = 3500): void {
-    this.ngZone.run(() => {
-      this.dialogSubject.next({
-        type: 'warning',
-        title,
-        message,
-        duration
-      });
-    });
-  }
-
-  info(title: string, message: string, duration = 3000): void {
-    this.ngZone.run(() => {
-      this.dialogSubject.next({
-        type: 'info',
-        title,
-        message,
-        duration
-      });
-    });
-  }
-
-  // ========== MÉTODO INTERNO PARA RESPUESTA ==========
-
-  sendResult(confirmed: boolean): void {
-    this.ngZone.run(() => {
-      this.resultSubject.next({ confirmed });
-    });
-  } */
-
     confirm(title: string, message: string, confirmText = 'Confirmar', cancelText = 'Cancelar'): Promise<boolean> {
     return new Promise((resolve) => {
       // ✅ setTimeout + NgZone evita ExpressionChangedAfterItHasBeenCheckedError
@@ -751,7 +672,15 @@ export class Dialogservice {
     );
   }
 
-  //NOSOTROS
+  confirmLogout(): Promise<boolean> {
+    return this.confirm(
+      'Cerrar sesión',
+      '¿Estás seguro que deseas cerrar sesión?',
+      'Sí, salir',
+      'Cancelar'
+    );
+  }
+
   
   
 

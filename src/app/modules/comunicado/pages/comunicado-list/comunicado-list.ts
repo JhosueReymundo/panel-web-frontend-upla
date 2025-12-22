@@ -103,12 +103,12 @@ export class ComunicadoList implements OnInit {
     if (!comunicado) return;
 
     if (!this.puedeModificar(comunicado)) {
-    this.dialogService.error(
-      'No autorizado',
-      'Solo puedes eliminar comunicados que tú creaste'
-    );
-    return;
-  }
+      this.dialogService.error(
+        'No autorizado',
+        'Solo puedes eliminar comunicados que tú creaste'
+      );
+      return;
+    }
 
     // USAR DIALOG SERVICE PARA CONFIRMAR
     const confirmed = await this.dialogService.confirmDeleteDocumento(

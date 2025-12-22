@@ -2,6 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { Authservice } from '../../../modules/auth/services/authservice';
 import { Router } from '@angular/router';
+import { Dialogservice } from '../../dialog/services/dialogservice';
 
 @Component({
   selector: 'app-header',
@@ -19,14 +20,15 @@ export class Header implements OnInit {
   showNotifications = false;
   
   notifications = [
-    { id: 1, title: 'Nuevo horario disponible', time: 'Hace 5 min', unread: true },
-    { id: 2, title: 'Asignatura actualizada', time: 'Hace 1 hora', unread: true },
+    { id: 1, title: 'Nuevo horario disponible', time: 'Hace 5 min', unread: false },
+    { id: 2, title: 'Asignatura actualizada', time: 'Hace 1 hora', unread: false },
     { id: 3, title: 'Reunión programada', time: 'Hace 2 horas', unread: false }
   ];
 
   constructor(
     private authService: Authservice,
-    private router: Router
+    private router: Router,
+    private dialogService:Dialogservice
   ) {}
 
   ngOnInit(): void {
@@ -50,20 +52,22 @@ export class Header implements OnInit {
     this.showUserMenu = false;
   }
 
-  logout(): void {
-    if (confirm('¿Estás seguro que deseas cerrar sesión?')) {
-      this.authService.logout().subscribe({
-        next: () => {
-          console.log('✅ Logout exitoso');
-          this.router.navigate(['/login']);
-        },
-        error: (err) => {
-          console.error('❌ Error en logout:', err);
-          // Hacer logout silencioso si falla la petición
-          this.authService.logoutSilent();
-        }
-      });
-    }
+  async logout(): Promise<void> {
+
+    const confirmed = await this.dialogService.confirmLogout();
+
+    if (!confirmed) return;
+
+    this.authService.logout().subscribe({
+      next: () => {
+        this.router.navigate(['/login']);
+      },
+      error: (err) => {
+       // console.error('❌ Error en logout:', err);
+        this.authService.logoutSilent();
+      }
+    });
+    
   }
 
   get unreadCount(): number {

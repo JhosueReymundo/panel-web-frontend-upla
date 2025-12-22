@@ -44,24 +44,6 @@ export class DependenciaList implements OnInit{
     });
   }
 
-  /* deleteDependencia(id: number): void {
-    if (!confirm('¿Estás seguro de eliminar esta dependencia?')) {
-      return;
-    }
-    
-    this.dependenciaService.delete(id).subscribe({
-      next: () => {
-        this.dependencias = this.dependencias.filter(e => e.id !== id);
-        alert('Dependencia eliminada correctamente');
-        this.cd.detectChanges(); 
-      },
-      error: (err) => {
-        alert('Error al eliminar dependencia');
-        console.error('Error:', err);
-      }
-    });
-  } */
-
 
   async deleteDependencia(id:number):Promise<void>{
     if (this.deletingIds.has(id)) {
