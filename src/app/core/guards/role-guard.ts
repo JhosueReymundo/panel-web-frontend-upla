@@ -21,6 +21,10 @@ export const roleGuard = (allowedRoles: string[]): CanActivateFn => {
       return false;
     }
 
+    if (authService.isAdmin()) {
+      return true;
+    }
+
     // Obtener el rol del usuario
     const userRole = authService.getUserRole();
 

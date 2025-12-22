@@ -90,23 +90,23 @@ export class Authservice {
 
     // Crear nuevo timer que refresca cada 13 minutos
     this.refreshTokenInterval$ = interval(this.REFRESH_INTERVAL).subscribe(() => {
-      console.log('🔄 Refrescando tokens automáticamente...');
+      //console.log('🔄 Refrescando tokens automáticamente...');
       this.refreshToken().subscribe({
         next: () => console.log('✅ Auto-refresh exitoso'),
         error: (err) => {
-          console.error('❌ Error en auto-refresh:', err);
+          //console.error('❌ Error en auto-refresh:', err);
           this.clearSessionAndRedirect();
         }
       });
     });
 
-    console.log('⏰ Timer de auto-refresh iniciado (cada 13 minutos)');
+    //console.log('⏰ Timer de auto-refresh iniciado (cada 13 minutos)');
   }
 
   private stopRefreshTokenTimer(): void {
     if (this.refreshTokenInterval$) {
       this.refreshTokenInterval$.unsubscribe();
-      console.log('⏸️ Timer de auto-refresh detenido');
+      //console.log('⏸️ Timer de auto-refresh detenido');
     }
   }
 

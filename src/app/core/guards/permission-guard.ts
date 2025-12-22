@@ -19,6 +19,9 @@ export const permissionGuard = (requiredPermission: string): CanActivateFn => {
       return false;
     }
 
+    if (authService.isAdmin()) {
+      return true;
+    }
     // Verificar permiso (necesitarías extender AuthService para obtener permisos)
     const hasPermission = authService.hasPermission(requiredPermission);
 
