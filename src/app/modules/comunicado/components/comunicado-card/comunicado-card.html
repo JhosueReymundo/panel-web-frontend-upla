@@ -45,14 +45,26 @@
       </div>
       <div class="autor-info">
         <span class="autor-nombre">{{ getAutorCompleto() }}</span>
-        <div class="autor-detalles">
+        <!-- <div class="autor-detalles">
           <span *ngFor="let info of getAutorInfo(); let last = last" class="autor-detalle">
             {{ info }}<span *ngIf="!last" class="separator">•</span>
           </span>
           <span *ngIf="getAutorInfo().length === 0" class="autor-detalle sin-info">
             Sin información institucional
           </span>
+        </div> -->
+        <div class="autor-detalles">
+          <span *ngIf="getAutorInstitucion(); else sinInfo" class="autor-detalle">
+            {{ getAutorInstitucion() }}
+          </span>
+
+          <ng-template #sinInfo>
+            <span class="autor-detalle sin-info">
+              Sin información institucional
+            </span>
+          </ng-template>
         </div>
+
       </div>
     </div>
   </div>

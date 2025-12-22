@@ -45,6 +45,36 @@ export class ComunicadoCard {
     return info;
   }
 
+  getAutorInstitucion(): string | null {
+    const autor = this.comunicado.autor;
+
+    if (autor.escuela) {
+      return autor.escuela.nombreEscuela;
+    }
+
+    if (autor.oficina) {
+      return autor.oficina;
+    }
+
+    if (autor.dependencia) {
+      return autor.dependencia.nombreDependencia;
+    }
+
+    return null;
+  }
+
+  getAutorInstitucionLabel(): string | null {
+    const autor = this.comunicado.autor;
+
+    if (autor.escuela) return `Escuela: ${autor.escuela.nombreEscuela}`;
+    if (autor.oficina) return `Oficina: ${autor.oficina}`;
+    if (autor.dependencia) return `Dependencia: ${autor.dependencia.nombreDependencia}`;
+
+    return null;
+  }
+
+
+
   getContenidoPreview(): string {
     const maxLength = 200;
     if (this.comunicado.contenido.length <= maxLength) {
