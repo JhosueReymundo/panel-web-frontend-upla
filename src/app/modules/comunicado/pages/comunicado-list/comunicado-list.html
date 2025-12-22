@@ -75,6 +75,28 @@
         <option value="visible">Visibles</option>
         <option value="oculto">Ocultos</option>
       </select>
+
+      <button
+        class="btn-secondary"
+        [class.active]="soloMios"
+        (click)="toggleSoloMios()">
+        Mis comunicados
+      </button>
+
+      <select (change)="onEscuelaChange($event)">
+        <option value="">Todas las escuelas</option>
+        <option *ngFor="let e of escuelas" [value]="e.id">
+          {{ e.nombre }}
+        </option>
+      </select>
+
+      <select (change)="onOficinaChange($event)">
+        <option value="">Todas las oficinas</option>
+        <option *ngFor="let o of oficinas" [value]="o">
+          {{ o }}
+        </option>
+      </select>
+
     </div>
   </div>
 

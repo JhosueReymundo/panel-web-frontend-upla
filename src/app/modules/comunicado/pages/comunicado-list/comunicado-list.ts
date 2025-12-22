@@ -15,6 +15,14 @@ import { Authservice } from '../../../auth/services/authservice';
 })
 export class ComunicadoList implements OnInit {
 
+
+  soloMios: boolean = false;
+  escuelaSeleccionada: number | null = null;
+  oficinaSeleccionada: string | null = null;
+
+  escuelas: { id: number; nombre: string }[] = [];
+  oficinas: string[] = [];
+
   comunicados: Comunicado[] = [];
   comunicadosFiltrados: Comunicado[] = [];
   loading = false;
@@ -40,9 +48,6 @@ export class ComunicadoList implements OnInit {
     return this.authService.isAdmin() || comunicado.autor.id === this.authService.getUserId();
   }
 
-  
-
-
   loadComunicados(): void {
     this.loading = true;
     this.error = null;
@@ -50,6 +55,30 @@ export class ComunicadoList implements OnInit {
     this.comunicadosService.getAll().subscribe({
       next: (data) => {
         this.comunicados = data;
+
+        this.escuelas = Array.from(
+          new Map(
+            data
+              .filter(c => c.autor.escuela)
+              .map(c => [
+                c.autor.escuela!.id,
+                {
+                  id: c.autor.escuela!.id,
+                  nombre: c.autor.escuela!.nombreEscuela
+                }
+              ])
+          ).values()
+        );
+
+        this.oficinas = Array.from(
+          new Set(
+            data
+              .map(c => c.autor.oficina)
+              .filter(o => o && o.trim() !== '')
+          )
+        );
+
+
         this.aplicarFiltros();
         this.loading = false;
         this.cd.detectChanges();
@@ -65,6 +94,25 @@ export class ComunicadoList implements OnInit {
   aplicarFiltros(): void {
     let resultado = [...this.comunicados];
 
+    // 🔹 Mis comunicados
+    if (this.soloMios) {
+      const userId = this.authService.getUserId();
+      resultado = resultado.filter(c => c.autor.id === userId);
+    }
+
+    // 🔹 Por escuela
+    if (this.escuelaSeleccionada) {
+      resultado = resultado.filter(
+        c => c.autor.escuela?.id === this.escuelaSeleccionada
+      );
+    }
+
+    // 🔹 Por oficina
+    if (this.oficinaSeleccionada) {
+      resultado = resultado.filter(
+        c => c.autor.oficina === this.oficinaSeleccionada
+      );
+    }
     // Filtrar por visibilidad
     if (this.filtroVisibilidad === 'visible') {
       resultado = resultado.filter(c => c.esVisible);
@@ -96,6 +144,39 @@ export class ComunicadoList implements OnInit {
     this.searchTerm = input.value;
     this.aplicarFiltros();
   }
+
+
+  /* Esta parte estoy agregando, quitar si no funciona */
+  toggleSoloMios(): void {
+    this.soloMios = !this.soloMios;
+    this.aplicarFiltros();
+  }
+
+  onEscuelaChange(event: Event): void {
+    const select = event.target as HTMLSelectElement;
+    this.escuelaSeleccionada = select.value ? Number(select.value) : null;
+
+    // Si selecciona escuela, limpiamos oficina
+    if (this.escuelaSeleccionada) {
+      this.oficinaSeleccionada = null;
+    }
+
+    this.aplicarFiltros();
+  }
+
+  onOficinaChange(event: Event): void {
+    const select = event.target as HTMLSelectElement;
+    this.oficinaSeleccionada = select.value || null;
+
+    // Si selecciona oficina, limpiamos escuela
+    if (this.oficinaSeleccionada) {
+      this.escuelaSeleccionada = null;
+    }
+
+    this.aplicarFiltros();
+  }
+  /* hasta qui */
+
    
   async deleteComunicado(id: number): Promise<void> {
     // Encontrar el comunicado para mostrar su nombre
@@ -110,22 +191,18 @@ export class ComunicadoList implements OnInit {
       return;
     }
 
-    // USAR DIALOG SERVICE PARA CONFIRMAR
     const confirmed = await this.dialogService.confirmDeleteDocumento(
       comunicado.titulo
     );
 
     if (!confirmed) return;
 
-    // Si confirma, proceder con la eliminación
     this.comunicadosService.delete(id).subscribe({
       next: () => {
-        // USAR DIALOG SERVICE PARA NOTIFICAR ÉXITO
         this.dialogService.documentoEliminado();
         this.loadComunicados();
       },
       error: (err) => {
-        // USAR DIALOG SERVICE PARA ERROR
         this.dialogService.error('Error', 'No se pudo eliminar el comunicado');
         console.error('Error:', err);
       }
@@ -147,7 +224,6 @@ export class ComunicadoList implements OnInit {
     const action = event.esVisible ? 'publicar' : 'ocultar';
     const actionText = event.esVisible ? 'Publicar' : 'Ocultar';
 
-    // USAR DIALOG SERVICE PARA CONFIRMAR
     const confirmed = await this.dialogService.confirmToggleDocumento(
       comunicado.titulo,
       event.esVisible
@@ -155,13 +231,10 @@ export class ComunicadoList implements OnInit {
 
     if (!confirmed) return;
 
-    // Si confirma, proceder
     this.comunicadosService.toggleVisible(event.id, event.esVisible).subscribe({
       next: () => {
-        // Actualizar estado local
         comunicado.esVisible = event.esVisible;
         
-        // USAR DIALOG SERVICE PARA NOTIFICAR
         if (event.esVisible) {
           this.dialogService.documentoPublicado();
         } else {
@@ -172,7 +245,6 @@ export class ComunicadoList implements OnInit {
         this.cd.detectChanges();
       },
       error: (err) => {
-        // USAR DIALOG SERVICE PARA ERROR
         this.dialogService.error('Error', 'No se pudo cambiar la visibilidad');
         console.error('Error:', err);
       }

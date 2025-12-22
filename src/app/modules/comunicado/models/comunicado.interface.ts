@@ -18,6 +18,7 @@ export interface Comunicado {
       id: number;
       nombreDependencia: string;
     };
+    oficina:string;
   };
   fechaPublicacion: Date | null;
   fechaExpiracion: Date | null;

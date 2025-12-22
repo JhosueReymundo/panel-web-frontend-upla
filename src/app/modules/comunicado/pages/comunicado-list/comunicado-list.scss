@@ -56,6 +56,11 @@
     background: rgba(16, 185, 129, 0.2);
   }
 }
+.btn-secondary.active {
+  background: #10b981;
+  color: white;
+}
+
 
 // Estadísticas
 .stats-grid {
