@@ -100,6 +100,7 @@
     <app-comunicado-card 
       *ngFor="let comunicado of comunicadosFiltrados"
       [comunicado]="comunicado"
+      [puedeModificar]="puedeModificar(comunicado)"
       (delete)="deleteComunicado($event)"
       (toggleVisible)="toggleVisible($event)">
     </app-comunicado-card>

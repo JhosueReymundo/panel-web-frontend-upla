@@ -14,66 +14,21 @@ export class ComunicadoCard {
   @Input() comunicado!: Comunicado;
   @Output() delete = new EventEmitter<number>();
   @Output() toggleVisible = new EventEmitter<{ id: number; esVisible: boolean }>();
+  @Input() puedeModificar = false;
 
   constructor(private dialogService: Dialogservice ){}
 
   onDelete(): void {
-    /* if (confirm(`¿Estás seguro de eliminar el comunicado "${this.comunicado.titulo}"?`)) {
-      this.delete.emit(this.comunicado.id);
-    } */
     this.delete.emit(this.comunicado.id);
   }
 
   onToggleVisible(): void {
-    const newStatus = !this.comunicado.esVisible;
-    /* const action = newStatus ? 'publicar' : 'ocultar';
-    
-     if (confirm(`¿Estás seguro de ${action} este comunicado?`)) {
-      this.toggleVisible.emit({ 
-        id: this.comunicado.id, 
-        esVisible: newStatus 
-      });
-    }  */
+   const newStatus = !this.comunicado.esVisible;
    this.toggleVisible.emit({ 
         id: this.comunicado.id, 
         esVisible: newStatus 
       });
   } 
-
-  /*   async onDelete(): Promise<void> {
-    const confirmed = await this.dialogService.confirmDeleteDocumento(
-      this.comunicado.titulo
-    );
-    
-    if (confirmed) {
-      this.delete.emit(this.comunicado.id);
-      this.dialogService.documentoEliminado();
-    }
-  }
-
-  async onToggleVisible(): Promise<void> {
-    const newStatus = !this.comunicado.esVisible;
-    const action = newStatus ? 'publicar' : 'ocultar';
-    const actionText = newStatus ? 'Publicar' : 'Ocultar';
-    
-    const confirmed = await this.dialogService.confirmToggleDocumento(
-      this.comunicado.titulo,
-      newStatus
-    );
-    
-    if (confirmed) {
-      this.toggleVisible.emit({ 
-        id: this.comunicado.id, 
-        esVisible: newStatus 
-      });
-      
-      if (newStatus) {
-        this.dialogService.documentoPublicado();
-      } else {
-        this.dialogService.documentoOculto();
-      }
-    }
-  } */
 
   getAutorCompleto(): string {
     return `${this.comunicado.autor.nombre} ${this.comunicado.autor.apellido}`;

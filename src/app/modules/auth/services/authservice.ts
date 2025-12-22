@@ -246,7 +246,7 @@ export class Authservice {
 
   // Helpers para roles comunes
   isAdmin(): boolean {
-    return this.hasRole('Admin') || this.hasRole('Administrador');
+    return this.hasRole('Administrador') || this.hasRole('Administrador');
   }
 
   isModerator(): boolean {

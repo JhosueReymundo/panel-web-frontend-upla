@@ -29,11 +29,11 @@ export class ComunicadoCreate {
 
     // Agregar el ID del autor actual
     if (this.isCreateComunicadoDto(data)) {
-  const userId = this.authService.getUserId();
-  if (userId) {
-    data.autorId = userId;
-  }
-}
+      const userId = this.authService.getUserId();
+      if (userId) {
+        data.autorId = userId;
+      }
+    }
 
     this.comunicadosService.create(data as CreateComunicadoDto).subscribe({
       
@@ -54,6 +54,6 @@ export class ComunicadoCreate {
   }
 
   private isCreateComunicadoDto(data: CreateComunicadoDto | UpdateComunicadoDto): data is CreateComunicadoDto {
-  return (data as CreateComunicadoDto).titulo !== undefined;  // Se asume que 'titulo' es obligatorio en CreateComunicadoDto
+  return (data as CreateComunicadoDto).titulo !== undefined;  
 }
 }

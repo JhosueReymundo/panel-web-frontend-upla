@@ -5,6 +5,7 @@ import { ComunicadoCard } from '../../components/comunicado-card/comunicado-card
 import { Comunicado } from '../../models/comunicado.interface';
 import { Comunicadoservice } from '../../services/comunicadoservice';
 import { Dialogservice } from '../../../../shared/dialog/services/dialogservice';
+import { Authservice } from '../../../auth/services/authservice';
 
 @Component({
   selector: 'app-comunicado-list',
@@ -27,12 +28,20 @@ export class ComunicadoList implements OnInit {
     private comunicadosService: Comunicadoservice,
     private cd: ChangeDetectorRef,
     private dialogService:Dialogservice,
-    private ngZone: NgZone
+    private ngZone: NgZone,
+    private authService: Authservice
   ) {}
 
   ngOnInit(): void {
     this.loadComunicados();
   }
+
+  puedeModificar(comunicado: Comunicado): boolean {
+    return this.authService.isAdmin() || comunicado.autor.id === this.authService.getUserId();
+  }
+
+  
+
 
   loadComunicados(): void {
     this.loading = true;
@@ -87,43 +96,19 @@ export class ComunicadoList implements OnInit {
     this.searchTerm = input.value;
     this.aplicarFiltros();
   }
-
-   /* deleteComunicado(id: number): void {
-    this.comunicadosService.delete(id).subscribe({
-      next: () => {
-        alert('Comunicado eliminado correctamente');
-        this.loadComunicados();
-      },
-      error: (err) => {
-        alert('Error al eliminar el comunicado');
-        console.error('Error:', err);
-      }
-    });
-  }
-
-  toggleVisible(event: { id: number; esVisible: boolean }): void {
-    const action = event.esVisible ? 'publicado' : 'ocultado';
-    
-    this.comunicadosService.toggleVisible(event.id, event.esVisible).subscribe({
-      next: () => {
-        const comunicado = this.comunicados.find(c => c.id === event.id);
-        if (comunicado) {
-          comunicado.esVisible = event.esVisible;
-        }
-        alert(`Comunicado ${action} correctamente`);
-        this.aplicarFiltros();
-        this.cd.detectChanges();
-      },
-      error: (err) => {
-        alert('Error al cambiar la visibilidad');
-        console.error('Error:', err);
-      }
-    });
-  }  */
+   
   async deleteComunicado(id: number): Promise<void> {
     // Encontrar el comunicado para mostrar su nombre
     const comunicado = this.comunicados.find(c => c.id === id);
     if (!comunicado) return;
+
+    if (!this.puedeModificar(comunicado)) {
+    this.dialogService.error(
+      'No autorizado',
+      'Solo puedes eliminar comunicados que tú creaste'
+    );
+    return;
+  }
 
     // USAR DIALOG SERVICE PARA CONFIRMAR
     const confirmed = await this.dialogService.confirmDeleteDocumento(
@@ -150,6 +135,14 @@ export class ComunicadoList implements OnInit {
   async toggleVisible(event: { id: number; esVisible: boolean }): Promise<void> {
     const comunicado = this.comunicados.find(c => c.id === event.id);
     if (!comunicado) return;
+
+    if (!this.puedeModificar(comunicado)) {
+      this.dialogService.error(
+        'No autorizado',
+        'No puedes cambiar la visibilidad de este comunicado'
+      );
+      return;
+    }
 
     const action = event.esVisible ? 'publicar' : 'ocultar';
     const actionText = event.esVisible ? 'Publicar' : 'Ocultar';

@@ -90,7 +90,7 @@
   </div>
 
   <!-- Acciones -->
-  <div class="card-actions">
+  <div class="card-actions" *ngIf="puedeModificar">
     <button 
       class="btn-icon btn-toggle" 
       (click)="onToggleVisible()"
