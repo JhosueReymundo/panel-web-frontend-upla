@@ -1,75 +1,3 @@
-<!-- <div class="page-container">
-  <div class="page-header">
-    <h1>Gestión de Escuelas</h1>
-    <button class="btn-primary" routerLink="/escuelas/nuevo">
-      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-        <line x1="12" y1="5" x2="12" y2="19"></line>
-        <line x1="5" y1="12" x2="19" y2="12"></line>
-      </svg>
-      Nueva Escuela
-    </button>
-  </div>
-
-  <div *ngIf="loading" class="loading">
-    <div class="spinner"></div>
-    <p>Cargando escuelas...</p>
-  </div>
-
-  <div *ngIf="error" class="error-message">
-    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-      <circle cx="12" cy="12" r="10"></circle>
-      <line x1="12" y1="8" x2="12" y2="12"></line>
-      <line x1="12" y1="16" x2="12.01" y2="16"></line>
-    </svg>
-    <p>{{ error }}</p>
-    <button class="btn-secondary" (click)="loadEscuelas()">Reintentar</button>
-  </div>
-
-  <div *ngIf="!loading && !error" class="table-container">
-    <table class="data-table">
-      <thead>
-        <tr>
-          <th>ID</th>
-          <th>Nombre de la Escuela</th>
-          <th>Acciones</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let escuela of escuelas">
-          <td>{{ escuela.id }}</td>
-          <td>{{ escuela.nombreEscuela }}</td>
-          <td>
-            <div class="actions">
-              <button class="btn-icon btn-edit" [routerLink]="['/escuelas', escuela.id, 'editar']" title="Editar">
-                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                  <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
-                  <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
-                </svg>
-              </button>
-              <button class="btn-icon btn-delete" (click)="deleteEscuela(escuela.id)" title="Eliminar">
-                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                  <polyline points="3 6 5 6 21 6"></polyline>
-                  <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
-                </svg>
-              </button>
-            </div>
-          </td>
-        </tr>
-        <tr *ngIf="escuelas.length === 0">
-          <td colspan="3" class="empty-state">
-            <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <path d="M5 13.18v4L12 21l7-3.82v-4L12 17l-7-3.82zM12 3L1 9l11 6 9-4.91V17h2V9L12 3z"/>
-            </svg>
-            <p>No hay escuelas registradas</p>
-            <button class="btn-primary" routerLink="/escuelas/nuevo">Crear primera escuela</button>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-</div>
- -->
-
  <div class="page-container">
   <div class="page-header">
     <h1>Gestión de Escuelas</h1>
@@ -104,14 +32,14 @@
     <table class="data-table">
       <thead>
         <tr>
-          <th>ID</th>
+          <!-- <th>ID</th> -->
           <th>Nombre de la Escuela</th>
           <th>Acciones</th>
         </tr>
       </thead>
       <tbody>
         <tr *ngFor="let escuela of escuelas" [class.deleting]="isDeleting(escuela.id)">
-          <td>{{ escuela.id }}</td>
+          <!-- <td>{{ escuela.id }}</td> -->
           <td>{{ escuela.nombreEscuela }}</td>
           <td>
             <div class="actions">
