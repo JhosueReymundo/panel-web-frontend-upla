@@ -38,6 +38,13 @@ export class ProductoCard {
       });
   }
 
+  getLink(enlace?: string): string {
+    return enlace ?? '#';
+  }
+
+
+
+
   getEstadoClass(estado: EstadoProducto): string {
     const classes = {
       'Activo': 'estado-activo',

@@ -45,6 +45,7 @@ export class ProductoForm implements OnInit {
       version: ['v1.0.0', [Validators.required, Validators.maxLength(50)]],
       usuarios: ['', Validators.maxLength(100)],
       icono: ['🚀', [Validators.required, Validators.maxLength(50)]],
+      enlace: [''],
       orden: [0, [Validators.required, Validators.min(0)]],
       esVisible: [true],
       caracteristicas: this.fb.array([], Validators.required)
@@ -62,6 +63,7 @@ export class ProductoForm implements OnInit {
       usuarios: this.producto.usuarios,
       icono: this.producto.icono,
       orden: this.producto.orden,
+      enlace: this.producto.enlace,
       esVisible: this.producto.esVisible
     });
 
@@ -173,5 +175,6 @@ export class ProductoForm implements OnInit {
   get version() { return this.form.get('version'); }
   get usuarios() { return this.form.get('usuarios'); }
   get icono() { return this.form.get('icono'); }
+  get enlace() { return this.form.get('enlace'); }
   get orden() { return this.form.get('orden'); }
 }

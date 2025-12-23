@@ -23,6 +23,11 @@
       <span>{{ producto.usuarios }}</span>
     </div>
 
+    <a class="enlace" [href]="getLink(producto.enlace)" target="_blank">
+      {{ producto.enlace }}
+    </a> 
+
+
     <div class="caracteristicas-preview" *ngIf="producto.caracteristicas.length > 0">
       <h4>Características ({{ producto.caracteristicas.length }}):</h4>
       <ul>
